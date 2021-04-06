@@ -13,4 +13,15 @@ public class Group {
         this.id = id;
         edits = new LinkedList<Edit>();
     }
+    public int getId(){
+        return id;
+    }
+    public void addEdits(int[] editIds){
+
+        return;
+    }
+    public void removeEdits(int[] editIds){
+
+        return;
+    }
 }
