@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import static main.EditType.INSERT;
@@ -22,13 +23,14 @@ public class EditManager {
         //int splittedIndex = splitPiece(position, 0);
         //pieces.add(splittedIndex, newPiece);
 
-        FindResult result = findPiece(pieces, position);
-        splitPiece(result.piece, result.index, 0);
         //create newpiece
         //create Edit referring to newpiece
         //find piece at position
+        FindResult result = findPiece(pieces, position);
         //split it, update Edit to refer to both pieces
+        Piece[] splits = splitPiece(result.piece, result.index, 0);
         //insert newpiece at split
+        pieces = insertPiece(pieces, result.index, splits, newPiece);
     }
 
     public void delete(int position){
@@ -74,15 +76,15 @@ public class EditManager {
     }
 
     protected FindResult findPiece(LinkedList<Piece> pieces, int position) {
-        Piece curr = pieces.get(0);
-        int pos = curr.length();
-        int i = 1;
-        while (i <= pieces.size() && pos <= position) {
+        Piece curr;
+        int pos = 0;
+        int i = 0;
+        do {
             curr = pieces.get(i);
             pos += curr.length();
             i++;
-        }
-        return new FindResult(curr, curr.length() - pos + position);
+        } while (i <= pieces.size() && pos <= position);
+        return new FindResult(curr, i - 1, curr.length() - pos + position);
     }
 
 
@@ -101,13 +103,32 @@ public class EditManager {
         }
         return pieces.toArray(new Piece[0]);
     }
+
+    protected LinkedList<Piece> insertPiece(LinkedList<Piece> pieces, int index, Piece[] splits, Piece piece) {
+        LinkedList<Piece> nextPieces = new LinkedList<>();
+        for (int i = 0; i != pieces.size(); i++) {
+            Piece p = pieces.get(i);
+            if (i == index) {
+                nextPieces.add(splits[0]);
+                nextPieces.add(piece);
+                for (int j = 1; j != splits.length; j++) {
+                    nextPieces.add(splits[j]);
+                }
+            } else {
+                nextPieces.add(p);
+            }
+        }
+        return nextPieces;
+    }
 }
 
 class FindResult {
     public final Piece piece;
     public final int index;
-    public FindResult(Piece piece, int index) {
+    public final int piecePosition;
+    public FindResult(Piece piece, int index, int piecePosition) {
         this.piece = piece;
         this.index = index;
+        this.piecePosition = piecePosition;
     }
 }
