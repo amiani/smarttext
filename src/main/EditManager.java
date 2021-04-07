@@ -6,24 +6,13 @@ public class EditManager {
     private LinkedList<Piece> pieces = new LinkedList<Piece>();
     private LinkedList<Edit> edits = new LinkedList<Edit>();
 
-    /*
     public void insert(int position, char c){
-
-        //find new id for new piece by finding greatest id value
-        int lastElementPieceId = 0;
-        for(int i = 0; i < pieces.size();i++){
-            lastElementPieceId = Math.max(lastElementPieceId, pieces.get(i).getId());
-        }
-
-        //find new id for new edit
-        int lastElementEditId = edits.getLast().getId();
-
         //create new piece and put its id in a new piece id array
-        Piece newPiece = new Piece(lastElementPieceId+1, c);
+        Piece newPiece = new Piece(c);
         int[] newPieceArray = {newPiece.getId()};
 
         //create new edit and insert it in edits linked list
-        Edit newEdit = new Edit(lastElementEditId+1, newPieceArray);
+        Edit newEdit = new Edit(newPieceArray);
         edits.add(newEdit);
 
 
@@ -32,13 +21,10 @@ public class EditManager {
 
         return;
     }
-    */
 
-    /*
     public void delete(int position){
         splitPiece(position, 1);
     }
-     */
     public LinkedList<Edit> getEdits(){
         return edits;
     }
@@ -77,8 +63,8 @@ public class EditManager {
         return;
     }
 
-    protected LinkedList<Piece> splitPiece(LinkedList<Piece> pieces, int position, int deleteLength){
-        return pieces;
+    protected int splitPiece(int position, int deleteLength){
+        return 1;
     }
 
 
