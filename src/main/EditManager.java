@@ -92,6 +92,7 @@ public class EditManager {
         pieces.add(pre);
         if (deleteLength > 0) {
             Piece deleted = new Piece(text.substring(position, position + deleteLength), piece);
+            deleted.setVisible(false);
             pieces.add(deleted);
         }
         if (position + deleteLength < text.length()) {

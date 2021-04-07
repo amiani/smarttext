@@ -8,6 +8,11 @@ public class Piece {
     public boolean isVisible() {
         return isVisible;
     }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
     private boolean isVisible;
 
     public Piece(String text, Piece parent) {
