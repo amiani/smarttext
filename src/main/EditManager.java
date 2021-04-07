@@ -8,9 +8,9 @@ public class EditManager {
     private LinkedList<Piece> pieces = new LinkedList<Piece>();
     private LinkedList<Edit> edits = new LinkedList<Edit>();
 
-    public void insert(int position, char c){
+    public void insertString(int position, String s){
         //create new piece and put its id in a new piece id array
-        Piece newPiece = new Piece(c);
+        Piece newPiece = new Piece(s);
         int[] newPieceArray = {newPiece.getId()};
 
         //create new edit and insert it in edits linked list
@@ -18,14 +18,20 @@ public class EditManager {
         edits.add(newEdit);
 
 
-        int splittedIndex = splitPiece(position, 0);
-        pieces.add(splittedIndex, newPiece);
+        //int splittedIndex = splitPiece(position, 0);
+        //pieces.add(splittedIndex, newPiece);
 
         return;
+
+        //create newpiece
+        //create Edit referring to newpiece
+        //find piece at position
+        //split it, update Edit to refer to both pieces
+        //insert newpiece at split
     }
 
     public void delete(int position){
-        splitPiece(position, 1);
+        //splitPiece(position, 1);
     }
     public LinkedList<Edit> getEdits(){
         return edits;
@@ -34,6 +40,7 @@ public class EditManager {
     public String getText(){
         return "";
     }
+
     public void undo(int[] editIds){
 
     }
@@ -65,8 +72,11 @@ public class EditManager {
         return;
     }
 
-    protected int splitPiece(int position, int deleteLength){
-        return 1;
+    protected Piece findPiece(LinkedList<Piece> pieces, int position) {
+        return pieces.get(0);
+    }
+    protected LinkedList<Piece> splitPiece(LinkedList<Piece> pieces, int position, int deleteLength){
+        return pieces;
     }
 
 
