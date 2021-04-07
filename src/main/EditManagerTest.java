@@ -29,7 +29,8 @@ public class EditManagerTest {
         assertEquals(2, em.splitPiece(p1, 2, 0).length);
         assertEquals("n", em.splitPiece(p3, 1, 0)[0].text());
         assertEquals("ame", em.splitPiece(p3, 1, 0)[1].text());
-        assertEquals("e", em.splitPiece(p3, 1, 2)[1].text());
-        assertEquals(1, em.splitPiece(p1, 4, 1).length);
+        assertEquals("am", em.splitPiece(p3, 1, 2)[1].text());
+        assertEquals(2, em.splitPiece(p1, 4, 1).length);
+        assertEquals(3, em.splitPiece(p1, 2, 1).length);
     }
 }

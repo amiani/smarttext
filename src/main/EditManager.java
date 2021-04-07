@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static main.EditType.INSERT;
@@ -84,12 +85,17 @@ public class EditManager {
 
     protected Piece[] splitPiece(Piece piece, int position, int deleteLength) {
         String text = piece.text();
-        Piece first = new Piece(text.substring(0, position), piece);
-        if (position + deleteLength < text.length()) {
-            Piece second = new Piece(text.substring(position + deleteLength), piece);
-            return new Piece[]{first, second};
-        } else {
-            return new Piece[]{first};
+        ArrayList<Piece> pieces = new ArrayList<>();
+        Piece pre = new Piece(text.substring(0, position), piece);
+        pieces.add(pre);
+        if (deleteLength > 0) {
+            Piece deleted = new Piece(text.substring(position, position + deleteLength), piece);
+            pieces.add(deleted);
         }
+        if (position + deleteLength < text.length()) {
+            Piece end = new Piece(text.substring(position + deleteLength), piece);
+            pieces.add(end);
+        }
+        return pieces.toArray(new Piece[0]);
     }
 }
