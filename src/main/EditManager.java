@@ -6,9 +6,7 @@ public class EditManager {
     private LinkedList<Piece> pieces = new LinkedList<Piece>();
     private LinkedList<Edit> edits = new LinkedList<Edit>();
 
-    public EditManager(){
-
-    }
+    /*
     public void insert(int position, char c){
 
         //find new id for new piece by finding greatest id value
@@ -34,9 +32,13 @@ public class EditManager {
 
         return;
     }
+    */
+
+    /*
     public void delete(int position){
         splitPiece(position, 1);
     }
+     */
     public LinkedList<Edit> getEdits(){
         return edits;
     }
@@ -75,7 +77,9 @@ public class EditManager {
         return;
     }
 
-    public int splitPiece(int position, int deleteLength){
-
+    protected LinkedList<Piece> splitPiece(LinkedList<Piece> pieces, int position, int deleteLength){
+        return pieces;
     }
+
+
 }
