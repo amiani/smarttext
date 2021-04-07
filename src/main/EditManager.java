@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import static main.EditType.INSERT;
 
@@ -36,7 +37,7 @@ public class EditManager {
     }
 
     public String getText(){
-        return "";
+        return pieces.stream().map(Piece::text).collect(Collectors.joining(" "));
     }
 
     public void undo(int[] editIds){
