@@ -22,6 +22,8 @@ public class EditManager {
         //int splittedIndex = splitPiece(position, 0);
         //pieces.add(splittedIndex, newPiece);
 
+        FindResult result = findPiece(pieces, position);
+        splitPiece(result.piece, result.index, 0);
         //create newpiece
         //create Edit referring to newpiece
         //find piece at position
@@ -71,7 +73,7 @@ public class EditManager {
         return;
     }
 
-    protected Piece findPiece(LinkedList<Piece> pieces, int position) {
+    protected FindResult findPiece(LinkedList<Piece> pieces, int position) {
         Piece curr = pieces.get(0);
         int pos = curr.length();
         int i = 1;
@@ -80,8 +82,9 @@ public class EditManager {
             pos += curr.length();
             i++;
         }
-        return curr;
+        return new FindResult(curr, curr.length() - pos + position);
     }
+
 
     protected Piece[] splitPiece(Piece piece, int position, int deleteLength) {
         String text = piece.text();
@@ -97,5 +100,14 @@ public class EditManager {
             pieces.add(end);
         }
         return pieces.toArray(new Piece[0]);
+    }
+}
+
+class FindResult {
+    public final Piece piece;
+    public final int index;
+    public FindResult(Piece piece, int index) {
+        this.piece = piece;
+        this.index = index;
     }
 }

@@ -12,13 +12,17 @@ public class EditManagerTest {
     public void testFindPiece() {
         EditManager em = new EditManager();
         Piece p1 = new Piece("hello");
+        FindResult p1Res = new FindResult(p1, 0);
         Piece p2 = new Piece("my");
         Piece p3 = new Piece("name");
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(
                 p1, p2, p3));
-        assertEquals(p1, em.findPiece(pieces, 0));
-        assertEquals(p2, em.findPiece(pieces, 5));
-        assertEquals(p3, em.findPiece(pieces, 9));
+
+        assertEquals(p1, em.findPiece(pieces, 0).piece);
+        assertEquals(p2, em.findPiece(pieces, 5).piece);
+        assertEquals(p3, em.findPiece(pieces, 9).piece);
+        assertEquals(2, em.findPiece(pieces, 2).index);
+        assertEquals(1, em.findPiece(pieces, 6).index);
     }
 
     @Test
