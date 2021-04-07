@@ -19,17 +19,8 @@ public class EditManager {
         Edit newEdit = new Edit(INSERT, newPieceArray);
         edits.add(newEdit);
 
-
-        //int splittedIndex = splitPiece(position, 0);
-        //pieces.add(splittedIndex, newPiece);
-
-        //create newpiece
-        //create Edit referring to newpiece
-        //find piece at position
         FindResult result = findPiece(pieces, position);
-        //split it, update Edit to refer to both pieces
         Piece[] splits = splitPiece(result.piece, result.index, 0);
-        //insert newpiece at split
         pieces = insertPiece(pieces, result.index, splits, newPiece);
     }
 
@@ -86,7 +77,6 @@ public class EditManager {
         } while (i <= pieces.size() && pos <= position);
         return new FindResult(curr, i - 1, curr.length() - pos + position);
     }
-
 
     protected Piece[] splitPiece(Piece piece, int position, int deleteLength) {
         String text = piece.text();
