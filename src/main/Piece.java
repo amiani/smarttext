@@ -16,4 +16,5 @@ public class Piece {
         return id;
     }
     public String getText() { return text; }
+    public int length() { return text.length(); }
 }
