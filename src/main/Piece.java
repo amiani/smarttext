@@ -4,7 +4,17 @@ public class Piece {
     private int id;
     private static int masterId = 0;
     private String text;
+
+    public boolean isVisible() {
+        return isVisible;
+    }
     private boolean isVisible;
+
+    public Piece(String text, Piece parent) {
+        this.text = text;
+        this.id = parent.id();
+        this.isVisible = parent.isVisible();
+    }
 
     public Piece(String text){
         this.id = masterId++;
@@ -12,9 +22,9 @@ public class Piece {
         this.text = text;
     }
 
-    public int getId(){
+    public int id(){
         return id;
     }
-    public String getText() { return text; }
+    public String text() { return text; }
     public int length() { return text.length(); }
 }

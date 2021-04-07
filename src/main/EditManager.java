@@ -11,7 +11,7 @@ public class EditManager {
     public void insertString(int position, String s){
         //create new piece and put its id in a new piece id array
         Piece newPiece = new Piece(s);
-        int[] newPieceArray = {newPiece.getId()};
+        int[] newPieceArray = {newPiece.id()};
 
         //create new edit and insert it in edits linked list
         Edit newEdit = new Edit(INSERT, newPieceArray);
@@ -82,7 +82,14 @@ public class EditManager {
         return curr;
     }
 
-    protected LinkedList<Piece> splitPiece(LinkedList<Piece> pieces, int position, int deleteLength){
-        return pieces;
+    protected Piece[] splitPiece(Piece piece, int position, int deleteLength) {
+        String text = piece.text();
+        Piece first = new Piece(text.substring(0, position), piece);
+        if (position + deleteLength < text.length()) {
+            Piece second = new Piece(text.substring(position + deleteLength), piece);
+            return new Piece[]{first, second};
+        } else {
+            return new Piece[]{first};
+        }
     }
 }
