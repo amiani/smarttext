@@ -10,6 +10,10 @@ public class EditManager {
     private LinkedList<Piece> pieces = new LinkedList<Piece>();
     private LinkedList<Edit> edits = new LinkedList<Edit>();
 
+    public EditManager() {
+        pieces.add(new Piece(""));
+    }
+
     public void insertString(int position, String s){
         //create new piece and put its id in a new piece id array
         Piece newPiece = new Piece(s);
