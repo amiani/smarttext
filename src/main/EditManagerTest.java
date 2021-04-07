@@ -2,6 +2,8 @@ package main;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -17,11 +19,14 @@ public class EditManagerTest {
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(
                 p1, p2, p3));
 
-        assertEquals(p1, em.findPiece(pieces, 0).piece);
-        assertEquals(p2, em.findPiece(pieces, 5).piece);
+        assertEquals(null, em.findPiece(pieces, 0).piece);
+        assertEquals(p1, em.findPiece(pieces, 1).piece);
+        assertEquals(null, em.findPiece(pieces, 5).piece);
+        assertEquals(p2, em.findPiece(pieces, 6).piece);
         assertEquals(p3, em.findPiece(pieces, 9).piece);
         assertEquals(2, em.findPiece(pieces, 2).piecePosition);
         assertEquals(1, em.findPiece(pieces, 6).piecePosition);
+        assertEquals(null, em.findPiece(pieces, 11).piece);
     }
 
     @Test
@@ -43,17 +48,25 @@ public class EditManagerTest {
         Piece p1 = new Piece("hello");
         Piece p2 = new Piece("my");
         Piece p3 = new Piece("name");
-        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3));
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(new Piece("")));
+        ArrayList<Piece> pieceList = new ArrayList<>();
+        pieceList.add(p1);
+        assertEquals(p1.text(), em.insertPiece(pieces, 0, pieceList).get(0).text());
 
-
+        pieces = new LinkedList<>(Arrays.asList(p1, p2, p3));
         Piece pa = new Piece("a");
         Piece pb = new Piece("b");
         Piece pc = new Piece("c");
         Piece pnew = new Piece("new");
-        Piece[] splits = new Piece[]{pa, pb, pc};
-        assertEquals(pa.text(), em.insertPiece(pieces, 0, splits, pnew).get(0).text());
-        assertEquals(pnew.text(), em.insertPiece(pieces, 0, splits, pnew).get(1).text());
-        assertEquals(p2.text(), em.insertPiece(pieces, 3, splits, pnew).get(1).text());
-        assertEquals(pb.text(), em.insertPiece(pieces, 2, splits, pnew).get(4).text());
+        ArrayList<Piece> splits = new ArrayList<>();
+        splits.add(pa);
+        splits.add(pnew);
+        splits.add(pb);
+        splits.add(pc);
+        assertEquals(pa.text(), em.insertPiece(pieces, 0, splits).get(0).text());
+        assertEquals(pnew.text(), em.insertPiece(pieces, 0, splits).get(1).text());
+        assertEquals(p2.text(), em.insertPiece(pieces, 3, splits).get(1).text());
+        assertEquals(pb.text(), em.insertPiece(pieces, 2, splits).get(4).text());
+
     }
 }

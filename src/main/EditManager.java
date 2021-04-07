@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.max;
 import static main.EditType.INSERT;
 
 public class EditManager {
@@ -12,7 +13,7 @@ public class EditManager {
     private LinkedList<Edit> edits = new LinkedList<Edit>();
 
     public EditManager() {
-        pieces.add(new Piece(""));
+        //pieces.add(new Piece(""));
     }
 
     public void insertString(int position, String s){
@@ -24,20 +25,39 @@ public class EditManager {
         Edit newEdit = new Edit(INSERT, newPieceArray);
         edits.add(newEdit);
 
-        FindResult result = findPiece(pieces, position);
-        Piece[] splits = splitPiece(result.piece, result.index, 0);
-        pieces = insertPiece(pieces, result.index, splits, newPiece);
+        if (pieces.size() > 0) {
+            FindResult result = findPiece(pieces, position);
+            ArrayList<Piece> replacement = new ArrayList<>();
+            if (result.piece == null) {
+                replacement.add(pieces.get(result.index));
+                replacement.add(newPiece);
+            } else {
+                Piece[] splits = splitPiece(result.piece, result.index, 0);
+                replacement.add(splits[0]);
+                replacement.add(newPiece);
+                for (int i = 1; i != splits.length; i++) {
+                    replacement.add(splits[i]);
+                }
+            }
+            pieces = insertPiece(pieces, result.index, replacement);
+        } else {
+            LinkedList<Piece> nextPieces = new LinkedList<>();
+            nextPieces.add(newPiece);
+            pieces = nextPieces;
+        }
     }
 
-    public void delete(int position){
-        //splitPiece(position, 1);
+    public void delete(int position, int deleteLength) {
+        FindResult result = findPiece(pieces, position);
+        Piece[] splits = splitPiece(result.piece, result.index, deleteLength);
+
     }
     public LinkedList<Edit> getEdits(){
         return edits;
     }
 
     public String getText(){
-        return pieces.stream().map(Piece::text).collect(Collectors.joining(" "));
+        return pieces.stream().map(Piece::text).collect(Collectors.joining());
     }
 
     public void undo(int[] editIds){
@@ -72,17 +92,22 @@ public class EditManager {
     }
 
     protected FindResult findPiece(LinkedList<Piece> pieces, int position) {
-        Piece curr;
+        Piece curr = null;
         int pos = 0;
         int i = 0;
-        do {
+
+        while (i < pieces.size() && pos < position) {
             curr = pieces.get(i);
             if (curr.isVisible()) {
                 pos += curr.length();
             }
             i++;
-        } while (i < pieces.size() && pos <= position);
-        return new FindResult(curr, i - 1, curr.length() - pos + position);
+        }
+        if (pos <= position) {
+            return new FindResult(null, max(0, i - 1), 0);
+        } else {
+            return new FindResult(curr, i - 1, curr.length() - pos + position);
+        }
     }
 
     protected Piece[] splitPiece(Piece piece, int position, int deleteLength) {
@@ -102,15 +127,13 @@ public class EditManager {
         return pieces.toArray(new Piece[0]);
     }
 
-    protected LinkedList<Piece> insertPiece(LinkedList<Piece> pieces, int index, Piece[] splits, Piece piece) {
+    protected LinkedList<Piece> insertPiece(LinkedList<Piece> pieces, int index, ArrayList<Piece> replacement) {
         LinkedList<Piece> nextPieces = new LinkedList<>();
         for (int i = 0; i != pieces.size(); i++) {
             Piece p = pieces.get(i);
             if (i == index) {
-                nextPieces.add(splits[0]);
-                nextPieces.add(piece);
-                for (int j = 1; j != splits.length; j++) {
-                    nextPieces.add(splits[j]);
+                for (int j = 0; j != replacement.size(); j++) {
+                    nextPieces.add(replacement.get(j));
                 }
             } else {
                 nextPieces.add(p);
