@@ -2,6 +2,8 @@ package main;
 
 import java.util.LinkedList;
 
+import static main.EditType.INSERT;
+
 public class EditManager {
     private LinkedList<Piece> pieces = new LinkedList<Piece>();
     private LinkedList<Edit> edits = new LinkedList<Edit>();
@@ -12,7 +14,7 @@ public class EditManager {
         int[] newPieceArray = {newPiece.getId()};
 
         //create new edit and insert it in edits linked list
-        Edit newEdit = new Edit(newPieceArray);
+        Edit newEdit = new Edit(INSERT, newPieceArray);
         edits.add(newEdit);
 
 
