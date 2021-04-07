@@ -81,7 +81,7 @@ public class EditManager {
                 pos += curr.length();
             }
             i++;
-        } while (i <= pieces.size() && pos <= position);
+        } while (i < pieces.size() && pos <= position);
         return new FindResult(curr, i - 1, curr.length() - pos + position);
     }
 
