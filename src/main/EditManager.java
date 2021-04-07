@@ -77,7 +77,9 @@ public class EditManager {
         int i = 0;
         do {
             curr = pieces.get(i);
-            pos += curr.length();
+            if (curr.isVisible()) {
+                pos += curr.length();
+            }
             i++;
         } while (i <= pieces.size() && pos <= position);
         return new FindResult(curr, i - 1, curr.length() - pos + position);
