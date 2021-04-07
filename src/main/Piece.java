@@ -3,10 +3,10 @@ package main;
 public class Piece {
     private int id;
     private static int masterId = 0;
-    private char text;
+    private String text;
     private boolean isVisible;
 
-    public Piece(char text){
+    public Piece(String text){
         this.id = masterId++;
         this.isVisible = true;
         this.text = text;
@@ -15,4 +15,5 @@ public class Piece {
     public int getId(){
         return id;
     }
+    public String getText() { return text; }
 }
