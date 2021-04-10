@@ -2,6 +2,9 @@ package main;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import main.Group;
+
 import java.util.LinkedList;
 
 public class GroupManager implements DocumentListener, createDeleteGroup, modifyGroup{
@@ -11,6 +14,7 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     }
 
     public int createGroup(){
+    	
         //find id of the last element and add +1 to the value to get new id
         int lastElementId = groups.getLast().getId();
         Group newGroup = new Group(lastElementId+1);
@@ -49,6 +53,7 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
         }
         return;
     }
+    
     public void insertUpdate(DocumentEvent e) {
 
     }
