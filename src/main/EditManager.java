@@ -11,8 +11,8 @@ import static java.lang.Math.max;
 import static main.EditType.INSERT;
 
 public class EditManager {
-    private LinkedList<Piece> pieces = new LinkedList<Piece>();
-    private LinkedList<Edit> edits = new LinkedList<Edit>();
+    private LinkedList<Piece> pieces = new LinkedList<>();
+    private LinkedList<Edit> edits = new LinkedList<>();
 
     public EditManager() {
         //pieces.add(new Piece(""));
