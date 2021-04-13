@@ -110,9 +110,10 @@ public class EditManager {
     }
 
     protected LinkedList<Edit> removeEdits(List<Edit> edits, int[] editIds) {
-        return edits.stream()
-                .filter(e -> !Arrays.asList(editIds).contains(e.id()))
+        LinkedList<Edit> collect = edits.stream()
+                .filter(e -> !Arrays.stream(editIds).anyMatch(id -> id == e.id()))
                 .collect(Collectors.toCollection(LinkedList::new));
+        return collect;
     }
 
     protected FindResult findPiece(List<Piece> pieces, int position) {
