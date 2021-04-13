@@ -13,9 +13,10 @@ public class Edit {
         this.pieces = pieceIds;
     }
 
-    public int getId(){
+    public int id(){
         return id;
     }
+    public int[] pieces() { return pieces;}
 }
 
 enum EditType {
