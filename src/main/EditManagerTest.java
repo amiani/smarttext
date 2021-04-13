@@ -33,12 +33,13 @@ public class EditManagerTest {
         EditManager em = new EditManager();
         Piece p1 = new Piece("hello");
         Piece p3 = new Piece("name");
-        assertEquals(2, em.splitPiece(p1, 2, 0).length);
-        assertEquals("n", em.splitPiece(p3, 1, 0)[0].text());
-        assertEquals("ame", em.splitPiece(p3, 1, 0)[1].text());
-        assertEquals("am", em.splitPiece(p3, 1, 2)[1].text());
-        assertEquals(2, em.splitPiece(p1, 4, 1).length);
-        assertEquals(3, em.splitPiece(p1, 2, 1).length);
+        assertEquals(2, em.splitPiece(p1, 2, 0).size());
+        assertEquals("n", em.splitPiece(p3, 1, 0).get(0).text());
+        assertEquals("ame", em.splitPiece(p3, 1, 0).get(1).text());
+        assertEquals("am", em.splitPiece(p3, 1, 2).get(1).text());
+        assertEquals(2, em.splitPiece(p1, 4, 1).size());
+        assertEquals(3, em.splitPiece(p1, 2, 1).size());
+        assertEquals(2, em.splitPiece(p1, 0, 0).size());
     }
 
     @Test

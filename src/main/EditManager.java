@@ -34,11 +34,11 @@ public class EditManager {
                 replacement.add(pieces.get(result.index));
                 replacement.add(newPiece);
             } else {
-                Piece[] splits = splitPiece(result.piece, result.index, 0);
-                replacement.add(splits[0]);
+                ArrayList<Piece> splits = splitPiece(result.piece, result.index, 0);
+                replacement.add(splits.get(0));
                 replacement.add(newPiece);
-                for (int i = 1; i != splits.length; i++) {
-                    replacement.add(splits[i]);
+                for (int i = 1; i != splits.size(); i++) {
+                    replacement.add(splits.get(i));
                 }
             }
             pieces = insertPiece(pieces, result.index, replacement);
@@ -50,8 +50,9 @@ public class EditManager {
     }
 
     public void delete(int position, int deleteLength) {
+        //TODO: make delete Edit
         FindResult result = findPiece(pieces, position);
-        Piece[] splits = splitPiece(result.piece, result.index, deleteLength);
+        ArrayList<Piece> splits = splitPiece(result.piece, result.index, deleteLength);
 
     }
     public LinkedList<Edit> getEdits(){
@@ -136,7 +137,7 @@ public class EditManager {
         return new FindResult(curr, i - 1, curr.length() - pos + position);
     }
 
-    protected Piece[] splitPiece(Piece piece, int position, int deleteLength) {
+    protected ArrayList<Piece> splitPiece(Piece piece, int position, int deleteLength) {
         String text = piece.text();
         ArrayList<Piece> pieces = new ArrayList<>();
         Piece pre = new Piece(text.substring(0, position), piece);
@@ -150,7 +151,7 @@ public class EditManager {
             Piece end = new Piece(text.substring(position + deleteLength), piece);
             pieces.add(end);
         }
-        return pieces.toArray(new Piece[0]);
+        return pieces;
     }
 
     protected LinkedList<Piece> insertPiece(LinkedList<Piece> pieces, int index, ArrayList<Piece> replacement) {
