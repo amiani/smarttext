@@ -69,4 +69,16 @@ public class EditManagerTest {
         assertEquals(pb.text(), em.insertPiece(pieces, 2, splits).get(4).text());
 
     }
+
+    @Test
+    public void testTogglePieces() {
+        EditManager em = new EditManager();
+        Piece p1 = new Piece("hello");
+        Piece p2 = new Piece("my");
+        Piece p3 = new Piece("name");
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3));
+
+        assertFalse(em.togglePieces(pieces, new ArrayList<>(Arrays.asList(1))).get(1).isVisible());
+        assertTrue(em.togglePieces(pieces, new ArrayList<>(Arrays.asList(1))).get(0).isVisible());
+    }
 }
