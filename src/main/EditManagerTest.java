@@ -19,14 +19,14 @@ public class EditManagerTest {
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(
                 p1, p2, p3));
 
-        assertEquals(null, em.findPiece(pieces, 0).piece);
+        assertEquals(p1, em.findPiece(pieces, 0).piece);
         assertEquals(p1, em.findPiece(pieces, 1).piece);
-        assertEquals(null, em.findPiece(pieces, 5).piece);
+        assertEquals(p2, em.findPiece(pieces, 5).piece);
         assertEquals(p2, em.findPiece(pieces, 6).piece);
         assertEquals(p3, em.findPiece(pieces, 9).piece);
+        assertEquals(p3, em.findPiece(pieces, 11).piece);
         assertEquals(2, em.findPiece(pieces, 2).piecePosition);
         assertEquals(1, em.findPiece(pieces, 6).piecePosition);
-        assertEquals(null, em.findPiece(pieces, 11).piece);
     }
 
     @Test
