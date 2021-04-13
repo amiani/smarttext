@@ -13,6 +13,10 @@ public class Piece {
         isVisible = visible;
     }
 
+    public void toggleVisible() {
+        isVisible = !isVisible;
+    }
+
     private boolean isVisible;
 
     public Piece(String text, Piece parent) {
@@ -25,6 +29,12 @@ public class Piece {
         this.id = masterId++;
         this.isVisible = true;
         this.text = text;
+    }
+
+    public Piece(Piece that) {
+        this.text = that.text;
+        this.id = that.id;
+        this.isVisible = that.isVisible;
     }
 
     public int id(){
