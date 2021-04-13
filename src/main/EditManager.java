@@ -57,7 +57,10 @@ public class EditManager {
     }
 
     public String getText(){
-        return pieces.stream().map(Piece::text).collect(Collectors.joining());
+        return pieces.stream()
+                .filter(Piece::isVisible)
+                .map(Piece::text)
+                .collect(Collectors.joining());
     }
 
     public void undo(int[] editIds){
