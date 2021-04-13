@@ -69,11 +69,11 @@ public class EditManager {
         undo(editIds);
     }
 
-    protected LinkedList<Piece> togglePieces(LinkedList<Piece> pieces, List<Integer> pieceIds) {
+    protected LinkedList<Piece> togglePieces(LinkedList<Piece> pieces, int[] pieceIds) {
         return pieces.stream()
                 .map(p -> {
                     Piece q = new Piece(p);
-                    if (pieceIds.contains(p.id())) {
+                    if (Arrays.stream(pieceIds).anyMatch(id -> id == p.id())) {
                         q.toggleVisible();
                     }
                     return q; })
