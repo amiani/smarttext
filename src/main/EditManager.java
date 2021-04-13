@@ -147,7 +147,7 @@ public class EditManager {
         return pieces;
     }
 
-    protected LinkedList<Piece> replacePiece(LinkedList<Piece> pieces, int index, ArrayList<Piece> replacement) {
+    protected LinkedList<Piece> replacePiece(List<Piece> pieces, int index, ArrayList<Piece> replacement) {
         LinkedList<Piece> nextPieces = new LinkedList<>();
         for (int i = 0; i != pieces.size(); i++) {
             Piece p = pieces.get(i);
