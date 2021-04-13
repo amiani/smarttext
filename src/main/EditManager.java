@@ -3,7 +3,9 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.lang.Math.max;
 import static main.EditType.INSERT;
@@ -64,11 +66,27 @@ public class EditManager {
     }
 
     public void undo(int[] editIds){
-
+        IntStream ids = Arrays.stream(editIds);
+        List<Integer> pieceIds = edits.stream()
+                .filter(e -> ids.anyMatch(i -> i == e.id()))
+                .flatMapToInt(e -> IntStream.of(e.pieces()))
+                .boxed().collect(Collectors.toList());
+        pieces = togglePieces(pieces, pieceIds);
     }
 
     public void redo(int[] editIds){
+        undo(editIds);
+    }
 
+    protected LinkedList<Piece> togglePieces(LinkedList<Piece> pieces, List<Integer> pieceIds) {
+        return pieces.stream()
+                .map(p -> {
+                    Piece q = new Piece(p);
+                    if (pieceIds.contains(p.id())) {
+                        q.toggleVisible();
+                    }
+                    return q; })
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     public void deleteEdits(int[] editIds){
