@@ -18,7 +18,7 @@ public class EditManager {
         //pieces.add(new Piece(""));
     }
 
-    public void insertString(int position, String s){
+    public void insert(int position, String s){
         //create new piece and put its id in a new piece id array
         Piece newPiece = new Piece(s);
         int[] newPieceArray = {newPiece.id()};
@@ -41,7 +41,7 @@ public class EditManager {
                     replacement.add(splits.get(i));
                 }
             }
-            pieces = insertPiece(pieces, result.index, replacement);
+            pieces = replacePiece(pieces, result.index, replacement);
         } else {
             LinkedList<Piece> nextPieces = new LinkedList<>();
             nextPieces.add(newPiece);
@@ -154,7 +154,7 @@ public class EditManager {
         return pieces;
     }
 
-    protected LinkedList<Piece> insertPiece(LinkedList<Piece> pieces, int index, ArrayList<Piece> replacement) {
+    protected LinkedList<Piece> replacePiece(LinkedList<Piece> pieces, int index, ArrayList<Piece> replacement) {
         LinkedList<Piece> nextPieces = new LinkedList<>();
         for (int i = 0; i != pieces.size(); i++) {
             Piece p = pieces.get(i);

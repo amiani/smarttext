@@ -63,7 +63,7 @@ public class EditManagerTest {
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(new Piece("")));
         ArrayList<Piece> pieceList = new ArrayList<>();
         pieceList.add(p1);
-        assertEquals(p1.text(), em.insertPiece(pieces, 0, pieceList).get(0).text());
+        assertEquals(p1.text(), em.replacePiece(pieces, 0, pieceList).get(0).text());
 
         pieces = new LinkedList<>(Arrays.asList(p1, p2, p3));
         Piece pa = new Piece("a");
@@ -75,10 +75,10 @@ public class EditManagerTest {
         splits.add(pnew);
         splits.add(pb);
         splits.add(pc);
-        assertEquals(pa.text(), em.insertPiece(pieces, 0, splits).get(0).text());
-        assertEquals(pnew.text(), em.insertPiece(pieces, 0, splits).get(1).text());
-        assertEquals(p2.text(), em.insertPiece(pieces, 3, splits).get(1).text());
-        assertEquals(pb.text(), em.insertPiece(pieces, 2, splits).get(4).text());
+        assertEquals(pa.text(), em.replacePiece(pieces, 0, splits).get(0).text());
+        assertEquals(pnew.text(), em.replacePiece(pieces, 0, splits).get(1).text());
+        assertEquals(p2.text(), em.replacePiece(pieces, 3, splits).get(1).text());
+        assertEquals(pb.text(), em.replacePiece(pieces, 2, splits).get(4).text());
 
     }
 

@@ -16,8 +16,8 @@ public class EditListener implements DocumentListener {
         try {
             int position = e.getOffset();
             String text = doc.getText(position, e.getLength());
-            editManager.insertString(position, text);
-            System.out.println(position + ": " + text);
+            editManager.insert(position, text);
+            //System.out.println(position + ": " + text);
         } catch (BadLocationException badLocationException) {
             badLocationException.printStackTrace();
         }
