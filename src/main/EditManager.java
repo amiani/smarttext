@@ -41,8 +41,8 @@ public class EditManager {
 
     public void delete(int position, int deleteLength) {
         FindResult result = findPiece(pieces, position);
-        ArrayList<Piece> splits = splitPiece(result.piece, result.index, deleteLength);
-        int[] pieceIds = splits.stream().mapToInt(p -> p.id()).toArray();
+        ArrayList<Piece> splits = splitPiece(result.piece, result.piecePosition, deleteLength);
+        int[] pieceIds = splits.stream().mapToInt(Piece::id).toArray();
         Edit edit = new Edit(DELETE, pieceIds);
         edits.add(edit);
         pieces = replacePiece(pieces, result.index, splits);
