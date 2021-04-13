@@ -17,11 +17,36 @@ public class DocumentEditManagerSyncTest {
 
         try {
             doc.insertString(0, "abcd", null);
-            assertEquals(doc.getText(0, doc.getLength()), em.getText());
+            assertEquals(getAllText(doc), em.getText());
             doc.insertString(4, "efgh", null);
-            assertEquals(doc.getText(0, doc.getLength()), em.getText());
+            assertEquals(getAllText(doc), em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testDelete() {
+        PlainDocument doc = new PlainDocument();
+        EditManager em = new EditManager();
+        EditListener el = new EditListener(em);
+        doc.addDocumentListener(el);
+
+        try {
+            doc.insertString(0, "abcdefgh", null);
+            doc.remove(0, 2);
+            assertEquals(getAllText(doc), em.getText());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getAllText(PlainDocument d) {
+        try {
+            return d.getText(0, d.getLength());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
