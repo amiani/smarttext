@@ -30,16 +30,11 @@ public class EditManager {
         if (pieces.size() > 0) {
             FindResult result = findPiece(pieces, position);
             ArrayList<Piece> replacement = new ArrayList<>();
-            if (result.piece == null) {
-                replacement.add(pieces.get(result.index));
-                replacement.add(newPiece);
-            } else {
-                ArrayList<Piece> splits = splitPiece(result.piece, result.index, 0);
-                replacement.add(splits.get(0));
-                replacement.add(newPiece);
-                for (int i = 1; i != splits.size(); i++) {
-                    replacement.add(splits.get(i));
-                }
+            ArrayList<Piece> splits = splitPiece(result.piece, result.index, 0);
+            replacement.add(splits.get(0));
+            replacement.add(newPiece);
+            for (int i = 1; i != splits.size(); i++) {
+                replacement.add(splits.get(i));
             }
             pieces = replacePiece(pieces, result.index, replacement);
         } else {
