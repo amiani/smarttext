@@ -19,12 +19,10 @@ public class EditManager {
     }
 
     public void insert(int position, String s){
-        //create new piece and put its id in a new piece id array
         Piece newPiece = new Piece(s);
-        int[] newPieceArray = {newPiece.id()};
 
         //create new edit and insert it in edits linked list
-        Edit newEdit = new Edit(INSERT, newPieceArray);
+        Edit newEdit = new Edit(INSERT, new int[]{newPiece.id()});
         edits.add(newEdit);
 
         if (pieces.size() > 0) {
