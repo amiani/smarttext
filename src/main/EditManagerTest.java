@@ -24,6 +24,9 @@ public class EditManagerTest {
         assertEquals(p2, em.findPiece(pieces, 6).piece);
         assertEquals(p3, em.findPiece(pieces, 9).piece);
         assertEquals(p3, em.findPiece(pieces, 11).piece);
+
+        assertEquals(0, em.findPiece(pieces, 2).index);
+
         assertEquals(2, em.findPiece(pieces, 2).piecePosition);
         assertEquals(1, em.findPiece(pieces, 6).piecePosition);
     }
@@ -55,7 +58,7 @@ public class EditManagerTest {
     }
 
     @Test
-    public void testInsertPiece() {
+    public void testReplacePiece() {
         EditManager em = new EditManager();
         Piece p1 = new Piece("hello");
         Piece p2 = new Piece("my");
@@ -80,6 +83,18 @@ public class EditManagerTest {
         assertEquals(p2.text(), em.replacePiece(pieces, 3, splits).get(1).text());
         assertEquals(pb.text(), em.replacePiece(pieces, 2, splits).get(4).text());
 
+    }
+
+    @Test
+    public void testInsertPiece() {
+        EditManager em = new EditManager();
+        Piece p1 = new Piece("hello");
+        Piece p2 = new Piece("my");
+        Piece p3 = new Piece("name");
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3));
+
+        Piece AB = new Piece("AB");
+        assertEquals("AB", em.insertPiece(pieces, 2, AB).get(1).text());
     }
 
     @Test

@@ -14,31 +14,28 @@ public class EditManager {
     private LinkedList<Piece> pieces = new LinkedList<>();
     private LinkedList<Edit> edits = new LinkedList<>();
 
-    public EditManager() {
-        //pieces.add(new Piece(""));
+    public void insert(int position, String s){
+        Piece piece = new Piece(s);
+        Edit newEdit = new Edit(INSERT, new int[]{piece.id()});
+        edits.add(newEdit);
+        pieces = insertPiece(pieces, position, piece);
     }
 
-    public void insert(int position, String s){
-        Piece newPiece = new Piece(s);
-
-        //create new edit and insert it in edits linked list
-        Edit newEdit = new Edit(INSERT, new int[]{newPiece.id()});
-        edits.add(newEdit);
-
+    protected LinkedList<Piece> insertPiece(List<Piece> pieces, int position, Piece piece) {
         if (pieces.size() > 0) {
             FindResult result = findPiece(pieces, position);
             ArrayList<Piece> replacement = new ArrayList<>();
-            ArrayList<Piece> splits = splitPiece(result.piece, result.index, 0);
+            ArrayList<Piece> splits = splitPiece(result.piece, result.piecePosition, 0);
             replacement.add(splits.get(0));
-            replacement.add(newPiece);
+            replacement.add(piece);
             for (int i = 1; i != splits.size(); i++) {
                 replacement.add(splits.get(i));
             }
-            pieces = replacePiece(pieces, result.index, replacement);
+            return replacePiece(pieces, result.index, replacement);
         } else {
             LinkedList<Piece> nextPieces = new LinkedList<>();
-            nextPieces.add(newPiece);
-            pieces = nextPieces;
+            nextPieces.add(piece);
+            return nextPieces;
         }
     }
 
