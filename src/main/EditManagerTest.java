@@ -33,13 +33,25 @@ public class EditManagerTest {
         EditManager em = new EditManager();
         Piece p1 = new Piece("hello");
         Piece p3 = new Piece("name");
-        assertEquals(2, em.splitPiece(p1, 2, 0).size());
+
         assertEquals("n", em.splitPiece(p3, 1, 0).get(0).text());
         assertEquals("ame", em.splitPiece(p3, 1, 0).get(1).text());
         assertEquals("am", em.splitPiece(p3, 1, 2).get(1).text());
+        assertEquals("hello", em.splitPiece(p1, 0, 0).get(0).text());
+        assertEquals("hello", em.splitPiece(p1, 5, 0).get(0).text());
+
+        assertEquals(1, em.splitPiece(p1, 0, 0).size());
+        assertEquals(1, em.splitPiece(p1, 5, 0).size());
+        assertEquals(1, em.splitPiece(p1, 0, 5).size());
+        assertEquals(1, em.splitPiece(p1, 0, 5).size());
+        assertEquals(2, em.splitPiece(p1, 0, 4).size());
+        assertEquals(2, em.splitPiece(p1, 2, 0).size());
         assertEquals(2, em.splitPiece(p1, 4, 1).size());
         assertEquals(3, em.splitPiece(p1, 2, 1).size());
-        assertEquals(2, em.splitPiece(p1, 0, 0).size());
+
+        assertTrue(em.splitPiece(p1, 2, 1).get(0).isVisible());
+        assertFalse(em.splitPiece(p1, 2, 1).get(1).isVisible());
+        assertTrue(em.splitPiece(p1, 2, 1).get(2).isVisible());
     }
 
     @Test

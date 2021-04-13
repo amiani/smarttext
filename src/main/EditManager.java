@@ -140,16 +140,18 @@ public class EditManager {
     protected ArrayList<Piece> splitPiece(Piece piece, int position, int deleteLength) {
         String text = piece.text();
         ArrayList<Piece> pieces = new ArrayList<>();
-        Piece pre = new Piece(text.substring(0, position), piece);
-        pieces.add(pre);
+        if (position > 0) {
+            Piece pre = new Piece(text.substring(0, position), piece);
+            pieces.add(pre);
+        }
         if (deleteLength > 0) {
             Piece deleted = new Piece(text.substring(position, position + deleteLength), piece);
             deleted.setVisible(false);
             pieces.add(deleted);
         }
         if (position + deleteLength < text.length()) {
-            Piece end = new Piece(text.substring(position + deleteLength), piece);
-            pieces.add(end);
+            Piece post = new Piece(text.substring(position + deleteLength), piece);
+            pieces.add(post);
         }
         return pieces;
     }
