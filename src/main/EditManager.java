@@ -141,8 +141,7 @@ public class EditManager {
         String text = piece.text();
         ArrayList<Piece> pieces = new ArrayList<>();
         if (position > 0) {
-            Piece pre = new Piece(text.substring(0, position), piece);
-            pieces.add(pre);
+           pieces.add(new Piece(text.substring(0, position), piece));
         }
         if (deleteLength > 0) {
             Piece deleted = new Piece(text.substring(position, position + deleteLength), piece);
@@ -150,8 +149,7 @@ public class EditManager {
             pieces.add(deleted);
         }
         if (position + deleteLength < text.length()) {
-            Piece post = new Piece(text.substring(position + deleteLength), piece);
-            pieces.add(post);
+            pieces.add(new Piece(text.substring(position + deleteLength), piece));
         }
         return pieces;
     }
