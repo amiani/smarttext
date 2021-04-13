@@ -153,9 +153,7 @@ public class EditManager {
         for (int i = 0; i != pieces.size(); i++) {
             Piece p = pieces.get(i);
             if (i == index) {
-                for (int j = 0; j != replacement.size(); j++) {
-                    nextPieces.add(replacement.get(j));
-                }
+                nextPieces.addAll(replacement);
             } else {
                 nextPieces.add(p);
             }
