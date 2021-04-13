@@ -32,6 +32,29 @@ public class EditManagerTest {
     }
 
     @Test
+    public void testFindPieceInvisible() {
+        EditManager em = new EditManager();
+        Piece p1 = new Piece("abcd");
+        Piece p2 = new Piece("invis1");
+        p2.setVisible(false);
+        Piece p3 = new Piece("efgh");
+        Piece p4 = new Piece("invis2");
+        p4.setVisible(false);
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(
+                p1, p2, p3, p4));
+
+        assertEquals(p3, em.findPiece(pieces, 4).piece);
+        assertEquals(2, em.findPiece(pieces, 4).index);
+        /*
+        assertEquals(p1, em.findPiece(pieces, 1).piece);
+        assertEquals(p2, em.findPiece(pieces, 5).piece);
+        assertEquals(p2, em.findPiece(pieces, 6).piece);
+        assertEquals(p3, em.findPiece(pieces, 9).piece);
+        assertEquals(p3, em.findPiece(pieces, 11).piece);
+         */
+    }
+
+    @Test
     public void testSplitPiece() {
         EditManager em = new EditManager();
         Piece p1 = new Piece("hello");
