@@ -72,7 +72,7 @@ public class EditManager {
         undo(editIds);
     }
 
-    protected LinkedList<Piece> togglePieces(LinkedList<Piece> pieces, int[] pieceIds) {
+    protected LinkedList<Piece> togglePieces(List<Piece> pieces, int[] pieceIds) {
         return pieces.stream()
                 .map(p -> {
                     Piece q = new Piece(p);
