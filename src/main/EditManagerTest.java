@@ -88,7 +88,9 @@ public class EditManagerTest {
         Piece p1 = new Piece("hello");
         Piece p2 = new Piece("my");
         Piece p3 = new Piece("name");
-        LinkedList<Piece> pieces = (LinkedList<Piece>) Collections.singletonList(new Piece(""));
+        LinkedList<Piece> pieces = new LinkedList<>();
+        pieces.add(new Piece(""));
+
         ArrayList<Piece> pieceList = new ArrayList<>();
         pieceList.add(p1);
         assertEquals(p1.text(), em.replacePiece(pieces, 0, pieceList).get(0).text());
@@ -130,9 +132,9 @@ public class EditManagerTest {
         edits.add(new Edit(INSERT, new int[]{1,2,3}));
         edits.add(new Edit(INSERT, new int[]{1,3,5}));
 
-        assertArrayEquals(new int[]{0}, em.toPieceIds(edits, new int[]{0}).toArray());
-        assertArrayEquals(new int[]{1,2,3}, em.toPieceIds(edits, new int[]{1}).toArray());
-        assertArrayEquals(new int[]{1,2,3,5}, em.toPieceIds(edits, new int[]{1, 2}).toArray());
+        assertArrayEquals(new int[]{0}, em.toPieceIds(edits, new int[]{0}));
+        assertArrayEquals(new int[]{1,2,3}, em.toPieceIds(edits, new int[]{1}));
+        assertArrayEquals(new int[]{1,2,3,5}, em.toPieceIds(edits, new int[]{1, 2}));
     }
 
     @Test

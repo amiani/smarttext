@@ -57,14 +57,15 @@ public class EditManager {
     }
 
     public void undo(int[] editIds){
-        pieces = togglePieces(pieces, toPieceIds(edits, editIds).toArray());
+        pieces = togglePieces(pieces, toPieceIds(edits, editIds));
     }
 
-    protected IntStream toPieceIds(List<Edit> edits, int[] editIds) {
+    protected int[] toPieceIds(List<Edit> edits, int[] editIds) {
         return edits.stream()
                 .filter(e -> Arrays.stream(editIds).anyMatch(id -> id == e.id()))
                 .flatMapToInt(e -> IntStream.of(e.pieces()))
-                .distinct();
+                .distinct()
+                .toArray();
     }
 
     public void redo(int[] editIds){
