@@ -56,15 +56,15 @@ public class DocumentEditManagerSyncTest {
         doc.addDocumentListener(el);
 
         try {
-            doc.insertString(0, "abcd", null);
-            doc.insertString(4, "efgh", null);
+            doc.insertString(0, "abcd", null);  //0
+            doc.insertString(4, "efgh", null);  //1
             em.undo(new int[]{0});
             assertEquals("efgh", em.getText());
-            doc.insertString(4, "ijkl", null);
-            assertEquals(getAllText(doc), em.getText());
-            doc.insertString(2, "AB", null);
+            doc.insertString(4, "ijkl", null);  //2
+            assertEquals("efghijkl", em.getText());
+            doc.insertString(2, "AB", null);    //3
             em.undo(new int[]{1});
-            assertEquals(getAllText(doc), em.getText());
+            assertEquals("ABijkl", em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
