@@ -48,8 +48,9 @@ public class EditManager {
         //TODO: make delete Edit
         FindResult result = findPiece(pieces, position);
         ArrayList<Piece> splits = splitPiece(result.piece, result.index, deleteLength);
-
+        pieces = replacePiece(pieces, result.index, splits);
     }
+
     public LinkedList<Edit> getEdits(){
         return edits;
     }
