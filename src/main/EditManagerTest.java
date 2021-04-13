@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 
+import static main.EditType.INSERT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EditManagerTest {
@@ -86,7 +88,7 @@ public class EditManagerTest {
         Piece p1 = new Piece("hello");
         Piece p2 = new Piece("my");
         Piece p3 = new Piece("name");
-        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(new Piece("")));
+        LinkedList<Piece> pieces = (LinkedList<Piece>) Collections.singletonList(new Piece(""));
         ArrayList<Piece> pieceList = new ArrayList<>();
         pieceList.add(p1);
         assertEquals(p1.text(), em.replacePiece(pieces, 0, pieceList).get(0).text());
@@ -121,6 +123,19 @@ public class EditManagerTest {
     }
 
     @Test
+    public void testToPieceIds() {
+        EditManager em = new EditManager();
+        ArrayList<Edit> edits = new ArrayList<>();
+        edits.add(new Edit(INSERT, new int[]{0}));
+        edits.add(new Edit(INSERT, new int[]{1,2,3}));
+        edits.add(new Edit(INSERT, new int[]{1,3,5}));
+
+        assertArrayEquals(new int[]{0}, em.toPieceIds(edits, new int[]{0}).toArray());
+        assertArrayEquals(new int[]{1,2,3}, em.toPieceIds(edits, new int[]{1}).toArray());
+        assertArrayEquals(new int[]{1,2,3,5}, em.toPieceIds(edits, new int[]{1, 2}).toArray());
+    }
+
+    @Test
     public void testTogglePieces() {
         EditManager em = new EditManager();
         Piece p1 = new Piece("hello");
@@ -128,7 +143,7 @@ public class EditManagerTest {
         Piece p3 = new Piece("name");
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3));
 
-        assertFalse(em.togglePieces(pieces, new ArrayList<>(Arrays.asList(1))).get(1).isVisible());
-        assertTrue(em.togglePieces(pieces, new ArrayList<>(Arrays.asList(1))).get(0).isVisible());
+        assertFalse(em.togglePieces(pieces, new int[]{1}).get(1).isVisible());
+        assertTrue(em.togglePieces(pieces, new int[]{1}).get(0).isVisible());
     }
 }
