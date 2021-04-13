@@ -40,6 +40,9 @@ public class DocumentEditManagerSyncTest {
             doc.insertString(0, "abcdefgh", null);
             doc.remove(0, 2);
             assertEquals(getAllText(doc), em.getText());
+
+            doc.remove(2, 2);
+            assertEquals(getAllText(doc), em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
