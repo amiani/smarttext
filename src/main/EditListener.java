@@ -24,7 +24,8 @@ public class EditListener implements DocumentListener {
     }
 
     public void removeUpdate(DocumentEvent e) {
-
+        Document doc = e.getDocument();
+        editManager.delete(e.getOffset(), e.getLength());
     }
 
     public void changedUpdate(DocumentEvent e) {}
