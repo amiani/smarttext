@@ -85,28 +85,6 @@ public class EditManager {
 
     public void deleteEdits(int[] editIds){
         edits = removeEdits(edits, editIds);
-        /*
-        int arraySize = editIds.length;
-        int[] updatedEdits = editIds;
-
-        //iterate all edit elements and compare their id with list of edit ids. Continue iterating until reach end of linked list,
-        //or there are no more ids to delete
-        for(int pos = 0;pos<edits.size() && arraySize>0;pos++){
-            for(int j=0;j<updatedEdits.length;j++) {
-                if(edits.get(pos).id() == updatedEdits[j]){
-                    //if found matching id from edit id array and linked list, reduce the array size by -1 AND place the last valid id element in the position of the "matched" id
-                    //hence, the list of ids to be searched will keep getting smaller.
-                    arraySize--;
-                    edits.remove(pos);
-                    if(arraySize>0) {
-                        updatedEdits[j] = updatedEdits[arraySize];
-                    }
-                    break;
-                }
-            }
-        }
-        return;
-        */
     }
 
     protected LinkedList<Edit> removeEdits(List<Edit> edits, int[] editIds) {
