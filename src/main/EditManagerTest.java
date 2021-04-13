@@ -2,9 +2,12 @@ package main;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static main.EditType.INSERT;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,18 +21,35 @@ public class EditManagerTest {
         Piece p3 = new Piece("name");
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(
                 p1, p2, p3));
+        ArrayList<FindResult> expected = new ArrayList<>();
 
-        assertEquals(p1, em.findPiece(pieces, 0).piece);
-        assertEquals(p1, em.findPiece(pieces, 1).piece);
-        assertEquals(p2, em.findPiece(pieces, 5).piece);
-        assertEquals(p2, em.findPiece(pieces, 6).piece);
-        assertEquals(p3, em.findPiece(pieces, 9).piece);
-        assertEquals(p3, em.findPiece(pieces, 11).piece);
+        expected.add(new FindResult(p1, 0, 0));
+        assertTrue(compareFindResult(expected, em, pieces, 0, 0));
 
-        assertEquals(0, em.findPiece(pieces, 2).index);
+        expected.clear();
+        expected.add(new FindResult(p1, 0, 1));
+        assertTrue(compareFindResult(expected, em, pieces, 1, 0));
 
-        assertEquals(2, em.findPiece(pieces, 2).piecePosition);
-        assertEquals(1, em.findPiece(pieces, 6).piecePosition);
+        expected.clear();
+        expected.add(new FindResult(p2, 1, 0));
+        assertTrue(compareFindResult(expected, em, pieces, 5, 0));
+
+        expected.clear();
+        expected.add(new FindResult(p3, 2, 4));
+        assertTrue(compareFindResult(expected, em, pieces, 11, 0));
+    }
+
+    private boolean compareFindResult(ArrayList<FindResult> expected,
+                                      EditManager em,
+                                      List<Piece> pieces,
+                                      int position,
+                                      int deleteLength) {
+        return em.findPieces(pieces, position, deleteLength)
+                .allMatch(res -> expected.stream().anyMatch(ex -> {
+                    return res.piece == ex.piece
+                            && res.piecePosition == ex.piecePosition
+                            && res.index == ex.index;
+                }));
     }
 
     @Test
@@ -41,11 +61,25 @@ public class EditManagerTest {
         Piece p3 = new Piece("efgh");
         Piece p4 = new Piece("invis2");
         p4.setVisible(false);
-        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(
-                p1, p2, p3, p4));
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4));
 
-        assertEquals(p3, em.findPiece(pieces, 4).piece);
-        assertEquals(2, em.findPiece(pieces, 4).index);
+        ArrayList<FindResult> expected = new ArrayList<>();
+        expected.add(new FindResult(p3, 2, 0));
+        assertTrue(compareFindResult(expected, em, pieces, 4, 0));
+    }
+
+    @Test
+    public void testFindPieceDelete() {
+        EditManager em = new EditManager();
+        Piece p1 = new Piece("abcd");
+        Piece p2 = new Piece("invis1");
+        p2.setVisible(false);
+        Piece p3 = new Piece("efgh");
+        Piece p4 = new Piece("invis2");
+        p4.setVisible(false);
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4));
+
+        //assertEquals();
     }
 
     @Test

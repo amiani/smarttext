@@ -3,6 +3,7 @@ package main;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static main.EditType.DELETE;
 import static main.EditType.INSERT;
@@ -11,7 +12,7 @@ public class EditManager {
     private LinkedList<Piece> pieces = new LinkedList<>();
     private LinkedList<Edit> edits = new LinkedList<>();
 
-    public void insert(int position, String s){
+    public void insert(int position, String s) {
         Piece piece = new Piece(s);
         Edit newEdit = new Edit(INSERT, new int[]{piece.id()});
         edits.add(newEdit);
@@ -20,7 +21,7 @@ public class EditManager {
 
     protected LinkedList<Piece> insertPiece(List<Piece> pieces, int position, Piece piece) {
         if (pieces.size() > 0) {
-            FindResult result = findPiece(pieces, position);
+            FindResult result = findPieces(pieces, position, 0).toArray(FindResult[]::new)[0];
             ArrayList<Piece> replacement = new ArrayList<>();
             ArrayList<Piece> splits = splitPiece(result.piece, result.piecePosition, 0);
             replacement.add(splits.get(0));
@@ -37,12 +38,19 @@ public class EditManager {
     }
 
     public void delete(int position, int deleteLength) {
-        FindResult result = findPiece(pieces, position);
-        ArrayList<Piece> splits = splitPiece(result.piece, result.piecePosition, deleteLength);
+        pieces = deleteText(pieces, position, deleteLength);
+    }
+
+    protected LinkedList<Piece> deleteText(List<Piece> pieces, int position, int deleteLength) {
+        /*
+        ArrayList<FindResult> results = findPieces(pieces, position, deleteLength);
+        ArrayList<Piece> splits = splitPiece(results.piece, results.piecePosition, deleteLength);
         int[] pieceIds = splits.stream().mapToInt(Piece::id).toArray();
         Edit edit = new Edit(DELETE, pieceIds);
         edits.add(edit);
-        pieces = replacePiece(pieces, result.index, splits);
+        return replacePiece(pieces, results.index, splits);
+         */
+        return (LinkedList<Piece>) pieces;
     }
 
     public LinkedList<Edit> getEdits(){
@@ -89,12 +97,12 @@ public class EditManager {
 
     protected LinkedList<Edit> removeEdits(List<Edit> edits, int[] editIds) {
         LinkedList<Edit> collect = edits.stream()
-                .filter(e -> !Arrays.stream(editIds).anyMatch(id -> id == e.id()))
+                .filter(e -> Arrays.stream(editIds).noneMatch(id -> id == e.id()))
                 .collect(Collectors.toCollection(LinkedList::new));
         return collect;
     }
 
-    protected FindResult findPiece(List<Piece> pieces, int position) {
+    protected Stream<FindResult> findPieces(List<Piece> pieces, int position, int deleteLength) {
         Piece curr = pieces.get(0);
         int pos = 0;
         int i = 0;
@@ -106,7 +114,8 @@ public class EditManager {
             }
             i++;
         }
-        return new FindResult(curr, i - 1, curr.length() - pos + position);
+        Stream<FindResult> res = Stream.of(new FindResult(curr, i - 1, curr.length() - pos + position));
+        return res;
     }
 
     protected ArrayList<Piece> splitPiece(Piece piece, int position, int deleteLength) {
