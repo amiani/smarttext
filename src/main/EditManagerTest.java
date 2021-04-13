@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import static main.EditType.INSERT;
@@ -47,13 +46,6 @@ public class EditManagerTest {
 
         assertEquals(p3, em.findPiece(pieces, 4).piece);
         assertEquals(2, em.findPiece(pieces, 4).index);
-        /*
-        assertEquals(p1, em.findPiece(pieces, 1).piece);
-        assertEquals(p2, em.findPiece(pieces, 5).piece);
-        assertEquals(p2, em.findPiece(pieces, 6).piece);
-        assertEquals(p3, em.findPiece(pieces, 9).piece);
-        assertEquals(p3, em.findPiece(pieces, 11).piece);
-         */
     }
 
     @Test
