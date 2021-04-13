@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.lang.Math.max;
+import static main.EditType.DELETE;
 import static main.EditType.INSERT;
 
 public class EditManager {
@@ -45,9 +45,11 @@ public class EditManager {
     }
 
     public void delete(int position, int deleteLength) {
-        //TODO: make delete Edit
         FindResult result = findPiece(pieces, position);
         ArrayList<Piece> splits = splitPiece(result.piece, result.index, deleteLength);
+        int[] pieceIds = splits.stream().mapToInt(p -> p.id()).toArray();
+        Edit edit = new Edit(DELETE, pieceIds);
+        edits.add(edit);
         pieces = replacePiece(pieces, result.index, splits);
     }
 
