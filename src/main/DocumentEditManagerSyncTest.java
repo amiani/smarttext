@@ -18,7 +18,11 @@ public class DocumentEditManagerSyncTest {
         try {
             doc.insertString(0, "abcd", null);
             assertEquals(getAllText(doc), em.getText());
+
             doc.insertString(4, "efgh", null);
+            assertEquals(getAllText(doc), em.getText());
+
+            doc.insertString(2, "AB", null);
             assertEquals(getAllText(doc), em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
