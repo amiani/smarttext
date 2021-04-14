@@ -2,7 +2,6 @@ package main;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -24,19 +23,19 @@ public class EditManagerTest {
                 p1, p2, p3));
         ArrayList<FindResult> expected = new ArrayList<>();
 
-        expected.add(new FindResult(p1, 0, 0));
+        expected.add(new FindResult(p1, 0, 0, 0));
         assertTrue(compareFindResult(expected, em, pieces, 0, 0));
 
         expected.clear();
-        expected.add(new FindResult(p1, 0, 1));
+        expected.add(new FindResult(p1, 0, 1, 0));
         assertTrue(compareFindResult(expected, em, pieces, 1, 0));
 
         expected.clear();
-        expected.add(new FindResult(p2, 1, 0));
+        expected.add(new FindResult(p2, 1, 0, 0));
         assertTrue(compareFindResult(expected, em, pieces, 5, 0));
 
         expected.clear();
-        expected.add(new FindResult(p3, 2, 4));
+        expected.add(new FindResult(p3, 2, 4, 0));
         assertTrue(compareFindResult(expected, em, pieces, 11, 0));
     }
 
@@ -46,11 +45,12 @@ public class EditManagerTest {
                                       int position,
                                       int deleteLength) {
         Stream<FindResult> results = em.findPieces(pieces, position, deleteLength);
-        ArrayList<FindResult> results2 = (ArrayList<FindResult>) results.collect(Collectors.toList());
+        ArrayList<FindResult> results2 = results.collect(Collectors.toCollection(ArrayList<FindResult>::new));
         return expected.stream().allMatch(ex -> results2.stream()
                 .anyMatch(res -> res.piece == ex.piece
                             && res.piecePosition == ex.piecePosition
-                            && res.index == ex.index));
+                            && res.index == ex.index
+                            && res.splitLength == ex.splitLength));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class EditManagerTest {
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4));
 
         ArrayList<FindResult> expected = new ArrayList<>();
-        expected.add(new FindResult(p3, 2, 0));
+        expected.add(new FindResult(p3, 2, 0, 0));
         assertTrue(compareFindResult(expected, em, pieces, 4, 0));
     }
 
@@ -83,23 +83,23 @@ public class EditManagerTest {
         LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4, p5, p6));
 
         ArrayList<FindResult> expected = new ArrayList<>();
-        expected.add(new FindResult(p1, 0, 0));
+        expected.add(new FindResult(p1, 0, 0, 2));
         assertTrue(compareFindResult(expected, em, pieces, 0, 2));
 
         expected.clear();
-        expected.add(new FindResult(p1, 0, 2));
-        expected.add(new FindResult(p2, 1, 0));
+        expected.add(new FindResult(p1, 0, 2, 2));
+        expected.add(new FindResult(p2, 1, 0, 2));
         assertTrue(compareFindResult(expected, em, pieces, 2, 4));
 
         expected.clear();
-        expected.add(new FindResult(p1, 0, 2));
-        expected.add(new FindResult(p2, 1, 0));
-        expected.add(new FindResult(p3, 2, 0));
+        expected.add(new FindResult(p1, 0, 2, 2));
+        expected.add(new FindResult(p2, 1, 0, 4));
+        expected.add(new FindResult(p3, 2, 0, 2));
         assertTrue(compareFindResult(expected, em, pieces, 2, 8));
 
         expected.clear();
-        expected.add(new FindResult(p3, 2, 2));
-        expected.add(new FindResult(p5, 4, 0));
+        expected.add(new FindResult(p3, 2, 2, 2));
+        expected.add(new FindResult(p5, 4, 0, 2));
         assertTrue(compareFindResult(expected, em, pieces, 10, 4));
     }
 
@@ -140,7 +140,7 @@ public class EditManagerTest {
 
         ArrayList<Piece> pieceList = new ArrayList<>();
         pieceList.add(p1);
-        assertEquals(p1.text(), em.replacePiece(pieces, 0, pieceList).get(0).text());
+        assertEquals(p1.text(), em.replacePieces(pieces, 0, pieceList).get(0).text());
 
         pieces = new LinkedList<>(Arrays.asList(p1, p2, p3));
         Piece pa = new Piece("a");
@@ -152,11 +152,40 @@ public class EditManagerTest {
         splits.add(pnew);
         splits.add(pb);
         splits.add(pc);
-        assertEquals(pa.text(), em.replacePiece(pieces, 0, splits).get(0).text());
-        assertEquals(pnew.text(), em.replacePiece(pieces, 0, splits).get(1).text());
-        assertEquals(p2.text(), em.replacePiece(pieces, 3, splits).get(1).text());
-        assertEquals(pb.text(), em.replacePiece(pieces, 2, splits).get(4).text());
+        assertEquals(pa.text(), em.replacePieces(pieces, 0, splits).get(0).text());
+        assertEquals(pnew.text(), em.replacePieces(pieces, 0, splits).get(1).text());
+        assertEquals(p2.text(), em.replacePieces(pieces, 3, splits).get(1).text());
+        assertEquals(pb.text(), em.replacePieces(pieces, 2, splits).get(4).text());
+    }
 
+    @Test
+    public void testReplacePieces() {
+        EditManager em = new EditManager();
+        Piece p1 = new Piece("hello");
+        Piece p2 = new Piece("my");
+        Piece p3 = new Piece("name");
+        LinkedList<Piece> pieces = new LinkedList<>();
+        pieces.add(p1);
+        pieces.add(p2);
+        pieces.add(p3);
+
+        Piece pa = new Piece("a");
+        Piece pb = new Piece("b");
+        ArrayList<Piece> splitab = new ArrayList<>();
+        splitab.add(pa);
+        splitab.add(pb);
+        Piece pc = new Piece("c");
+        ArrayList<Piece> splitc = new ArrayList<>();
+        splitab.add(pc);
+        ArrayList<ArrayList<Piece>> splits = new ArrayList<>();
+        splits.add(splitab);
+        splits.add(splitc);
+
+        assertEquals(pa, em.replacePieces(pieces, new int[]{0,1}, splits).get(0));
+        assertEquals(pb, em.replacePieces(pieces, new int[]{0,1}, splits).get(1));
+        assertEquals(pc, em.replacePieces(pieces, new int[]{0,1}, splits).get(2));
+        assertEquals(4, em.replacePieces(pieces, new int[]{0,1}, splits).size());
+        assertEquals(p3, em.replacePieces(pieces, new int[]{0,1}, splits).get(3));
     }
 
     @Test
@@ -169,6 +198,24 @@ public class EditManagerTest {
 
         Piece AB = new Piece("AB");
         assertEquals("AB", em.insertPiece(pieces, 2, AB).get(1).text());
+    }
+
+    @Test
+    public void testDeleteText() {
+        EditManager em = new EditManager();
+        Piece p1 = new Piece("abcd");
+        Piece p2 = new Piece("efgh");
+        Piece p3 = new Piece("ijkl");
+        Piece p4 = new Piece("invis1");
+        p4.setVisible(false);
+        Piece p5 = new Piece("mnop");
+        Piece p6 = new Piece("invis2");
+        p6.setVisible(false);
+
+        LinkedList<Piece> pieces = new LinkedList<>();
+        pieces.add(p1);
+        LinkedList<Piece> expected = new LinkedList<>();
+        assertFalse(em.deleteText(pieces, 0, 4).get(0).isVisible());
     }
 
     @Test
