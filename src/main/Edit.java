@@ -17,6 +17,10 @@ public class Edit {
         return id;
     }
     public int[] pieces() { return pieces;}
+
+    public String toString() {
+        return "Edit #".concat(String.valueOf(id));
+    }
 }
 
 enum EditType {
