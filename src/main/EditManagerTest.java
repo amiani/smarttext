@@ -74,12 +74,13 @@ public class EditManagerTest {
         EditManager em = new EditManager();
         Piece p1 = new Piece("abcd");
         Piece p2 = new Piece("efgh");
-        Piece p3 = new Piece("invis1");
-        p3.setVisible(false);
-        Piece p4 = new Piece("ijkl");
-        Piece p5 = new Piece("invis2");
-        p5.setVisible(false);
-        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4, p5));
+        Piece p3 = new Piece("ijkl");
+        Piece p4 = new Piece("invis1");
+        p4.setVisible(false);
+        Piece p5 = new Piece("mnop");
+        Piece p6 = new Piece("invis2");
+        p6.setVisible(false);
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4, p5, p6));
 
         ArrayList<FindResult> expected = new ArrayList<>();
         expected.add(new FindResult(p1, 0, 0));
@@ -89,6 +90,17 @@ public class EditManagerTest {
         expected.add(new FindResult(p1, 0, 2));
         expected.add(new FindResult(p2, 1, 0));
         assertTrue(compareFindResult(expected, em, pieces, 2, 4));
+
+        expected.clear();
+        expected.add(new FindResult(p1, 0, 2));
+        expected.add(new FindResult(p2, 1, 0));
+        expected.add(new FindResult(p3, 2, 0));
+        assertTrue(compareFindResult(expected, em, pieces, 2, 8));
+
+        expected.clear();
+        expected.add(new FindResult(p3, 2, 2));
+        expected.add(new FindResult(p5, 4, 0));
+        assertTrue(compareFindResult(expected, em, pieces, 10, 4));
     }
 
     @Test
