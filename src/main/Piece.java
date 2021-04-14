@@ -2,7 +2,7 @@ package main;
 
 public class Piece {
     private int id;
-    private static int masterId = 0;
+    protected static int masterId = 0;
     private String text;
 
     public boolean isVisible() {
@@ -11,6 +11,10 @@ public class Piece {
 
     public void setVisible(boolean visible) {
         isVisible = visible;
+    }
+
+    public void toggleVisible() {
+        isVisible = !isVisible;
     }
 
     private boolean isVisible;
@@ -25,6 +29,12 @@ public class Piece {
         this.id = masterId++;
         this.isVisible = true;
         this.text = text;
+    }
+
+    public Piece(Piece that) {
+        this.text = that.text;
+        this.id = that.id;
+        this.isVisible = that.isVisible;
     }
 
     public int id(){
