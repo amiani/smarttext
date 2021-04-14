@@ -106,6 +106,7 @@ public class EditManager {
         Piece curr = pieces.get(0);
         int pos = 0;
         int i = 0;
+        ArrayList<FindResult> results = new ArrayList<>();
 
         while (i < pieces.size() && pos <= position) {
             curr = pieces.get(i);
@@ -114,8 +115,19 @@ public class EditManager {
             }
             i++;
         }
-        Stream<FindResult> res = Stream.of(new FindResult(curr, i - 1, curr.length() - pos + position));
-        return res;
+        int piecePosition = curr.length() - pos + position;
+        results.add(new FindResult(curr, i - 1, piecePosition));
+        deleteLength -= curr.length() - piecePosition;
+        while (i < pieces.size() && deleteLength > 0) {
+            curr = pieces.get(i);
+            if (curr.isVisible()) {
+                results.add(new FindResult(curr, i, 0));
+                deleteLength -= curr.length();
+            }
+            i++;
+        }
+        //Stream<FindResult> res = Stream.of(new FindResult(curr, i - 1, curr.length() - pos + position));
+        return results.stream();
     }
 
     protected ArrayList<Piece> splitPiece(Piece piece, int position, int deleteLength) {

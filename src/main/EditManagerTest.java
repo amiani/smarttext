@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static main.EditType.INSERT;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,12 +45,12 @@ public class EditManagerTest {
                                       List<Piece> pieces,
                                       int position,
                                       int deleteLength) {
-        return em.findPieces(pieces, position, deleteLength)
-                .allMatch(res -> expected.stream().anyMatch(ex -> {
-                    return res.piece == ex.piece
+        Stream<FindResult> results = em.findPieces(pieces, position, deleteLength);
+        ArrayList<FindResult> results2 = (ArrayList<FindResult>) results.collect(Collectors.toList());
+        return expected.stream().allMatch(ex -> results2.stream()
+                .anyMatch(res -> res.piece == ex.piece
                             && res.piecePosition == ex.piecePosition
-                            && res.index == ex.index;
-                }));
+                            && res.index == ex.index));
     }
 
     @Test
@@ -72,14 +73,22 @@ public class EditManagerTest {
     public void testFindPieceDelete() {
         EditManager em = new EditManager();
         Piece p1 = new Piece("abcd");
-        Piece p2 = new Piece("invis1");
-        p2.setVisible(false);
-        Piece p3 = new Piece("efgh");
-        Piece p4 = new Piece("invis2");
-        p4.setVisible(false);
-        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4));
+        Piece p2 = new Piece("efgh");
+        Piece p3 = new Piece("invis1");
+        p3.setVisible(false);
+        Piece p4 = new Piece("ijkl");
+        Piece p5 = new Piece("invis2");
+        p5.setVisible(false);
+        LinkedList<Piece> pieces = new LinkedList<>(Arrays.asList(p1, p2, p3, p4, p5));
 
-        //assertEquals();
+        ArrayList<FindResult> expected = new ArrayList<>();
+        expected.add(new FindResult(p1, 0, 0));
+        assertTrue(compareFindResult(expected, em, pieces, 0, 2));
+
+        expected.clear();
+        expected.add(new FindResult(p1, 0, 2));
+        expected.add(new FindResult(p2, 1, 0));
+        assertTrue(compareFindResult(expected, em, pieces, 2, 4));
     }
 
     @Test
