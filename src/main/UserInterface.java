@@ -10,6 +10,8 @@ package main;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 
 import java.util.LinkedList;
@@ -29,7 +31,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class UserInterface extends JFrame implements ActionListener, ListSelectionListener{
+public final class UserInterface extends JFrame implements ActionListener, ListSelectionListener, DocumentListener{
 	private static JPanel textarea;
 	private static JPanel editarea;
 	private static JPanel editoptions;
@@ -46,6 +48,9 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	private static JTextArea area;
 	private static JFrame frame;
 	private static int returnValue = 0;
+	private static EditManager em;
+	private static EditListener editlisten;
+	private static UIListener listener;
 	
 	//Default group + active group are only really here for testing. Will be replaced by edit groups on implementation
 	private static LinkedList<String> defaultgroup;
@@ -65,12 +70,18 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
 	      Logger.getLogger(UserInterface.class.getName()).log(Level.SEVERE, null, ex);
 	    }
-		
+		em = new EditManager();
+		editlisten = new EditListener(em);
+	    listener = new UIListener(em);
+	    
+	    
 	    
 	    //Creation of the text field
 	    textarea = new JPanel(new BorderLayout());
 	    textarea.setBorder(new TitledBorder ( new EtchedBorder(), "Text Area"));
 		area = new JTextArea();
+		area.getDocument().addDocumentListener(editlisten);
+		area.getDocument().addDocumentListener(this);
 		JScrollPane textscroll = new JScrollPane();
 		textscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		textscroll.setViewportView(area);
@@ -87,21 +98,15 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		
 		//Only here to avoid crashing while testing*** Delete later
 		defaultgroup = new LinkedList<String>();
-		/*
-		defaultgroup.add("aaa");
-		defaultgroup.add("bbb");
-		defaultgroup.add("ccc");
-		defaultgroup.add("ddd");
-		defaultgroup.add("eee");
-		defaultgroup.add("fff");
-		*/
+		
+		
 		//Plan for defaultgroup to hold all edits
 		
 		
-		activegroup = defaultgroup;
 		
 		
-		editlist= new JList(activegroup.toArray());
+		
+		editlist= new JList(em.getEdits().toArray());
 		editlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		editscroll = new JScrollPane();
 		
@@ -132,10 +137,25 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		editoptions = new JPanel(new GridLayout(0,2));
 		editoptions.setBorder(new TitledBorder ( new EtchedBorder(), "Edit Options"));
 		undobutton = new JButton("Undo");
+		undobutton.addActionListener(listener.new HandleUndoAction(editlist.getSelectedIndices()));
+		undobutton.addActionListener(this);
+		
+		
 		groupbutton = new JButton("Create Group");
+		groupbutton.addActionListener(listener.new HandleCreateGroupAction());
+		groupbutton.addActionListener(this);
+		
 		delbutton = new JButton("Delete Edit");
+		delbutton.addActionListener(listener.new HandleDeleteEditsAction(editlist.getSelectedIndices()));
+		delbutton.addActionListener(this);
+		
+		
 		managebutton = new JButton("Manage Group");
+		
+		
 		deletegroup = new JButton("Delete Group");
+		deletegroup.addActionListener(listener.new HandleDeleteGroupAction(grouplist.getSelectedIndex()));
+		deletegroup.addActionListener(this);
 		
 		groupbutton.addActionListener(this);
 		managebutton.addActionListener(this);
@@ -153,6 +173,8 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		editarea.add(editoptions, BorderLayout.SOUTH);
 	
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
 		
 		
 		frame.add(textscroll);
@@ -205,15 +227,17 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		defaultlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		JScrollPane defaultscroll = new JScrollPane(defaultlist);
 		
-		JList grouplist= new JList(activegroup.toArray());
-		grouplist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		JScrollPane groupscroll = new JScrollPane(grouplist);
+		JList group= new JList(activegroup.toArray());
+		group.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		JScrollPane groupscroll = new JScrollPane(group);
 		
 		manageoptions.add(defaultscroll);
 		manageoptions.add(groupscroll);
 		
 		addtogroup = new JButton("Add edit to group");
+		addtogroup.addActionListener(listener.new HandleAddEditAction(defaultlist.getSelectedIndices(), grouplist.getSelectedIndex()));
 		remfromgroup = new JButton("Remove edit from group");
+		remfromgroup.addActionListener((listener.new HandleRemoveEditAction(grouplist.getSelectedIndex(), group.getSelectedIndices())));
 		
 		manageoptions.add(addtogroup);
 		manageoptions.add(remfromgroup);
@@ -235,6 +259,8 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	//Functionality for popup windows via creategroup/managegroup
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//update editlist
+		editlist.setListData(em.getEdits().toArray());
 		String ae = e.getActionCommand();
 		if(ae.equals("Create Group")) {
 			String groupname = JOptionPane.showInputDialog("Please enter a name for the group");
@@ -249,5 +275,24 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 				manageGroup(group);
 			}
 		}
+	}
+
+	//Document listeners to update the editlist
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		editlist.setListData(em.getEdits().toArray());
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		editlist.setListData(em.getEdits().toArray());
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

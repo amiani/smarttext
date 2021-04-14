@@ -20,13 +20,13 @@ public class UIListener {
 	EditManager em;
 	GroupManager gm;
 
-	public UIListener() {
-		em = new EditManager();
+	public UIListener(EditManager e) {
+		em = e;
 		gm = new GroupManager();
 	}
 
 	// ERROR HANLING METHODS
-
+	
 	/**
 	 * Checks array to ensure there are no negative values in the provided array
 	 * 
