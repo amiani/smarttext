@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.swing.JScrollPane;
 
 public final class TextEdit extends JFrame implements ActionListener {
 	private static JTextArea area;
@@ -41,10 +41,14 @@ public final class TextEdit extends JFrame implements ActionListener {
 		  Logger.getLogger(TextEdit.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
+		
 		// Set attributes of the app window
 		area = new JTextArea();
+		JScrollPane scrollPane = new JScrollPane(area);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(area);
+		frame.add(scrollPane);
 		frame.setSize(640, 480);
 		frame.setVisible(true);
 		
