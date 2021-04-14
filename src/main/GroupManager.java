@@ -55,15 +55,6 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
     }
 <<<<<<< HEAD
 =======
-    
-    public void insertUpdate(DocumentEvent e) {
-
-    }
-
-    public void removeUpdate(DocumentEvent e) {
-
-    }
-
-    public void changedUpdate(DocumentEvent e) {}
+=======
 >>>>>>> a592c84 (UIListener Created and almost finished)
 }
