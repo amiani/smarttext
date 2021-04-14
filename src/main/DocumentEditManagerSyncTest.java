@@ -49,7 +49,7 @@ public class DocumentEditManagerSyncTest {
     }
 
     @Test
-    public void testUndo() {
+    public void testUndoInsert() {
         PlainDocument doc = new PlainDocument();
         EditManager em = new EditManager();
         EditListener el = new EditListener(em);
@@ -67,6 +67,36 @@ public class DocumentEditManagerSyncTest {
             assertEquals("ABijkl", em.getText());
             em.redo(new int[]{0});
             assertEquals("abcdABijkl", em.getText());
+            doc.insertString(5, "XY", null);    //4
+            assertEquals("abcdAXYBijkl", em.getText());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testUndoInsertDelete() {
+        PlainDocument doc = new PlainDocument();
+        EditManager em = new EditManager();
+        EditListener el = new EditListener(em);
+        doc.addDocumentListener(el);
+
+        try {
+            doc.insertString(0, "abcd", null);  //0
+            doc.insertString(4, "efgh", null);  //1
+            em.undo(new int[]{0});
+            assertEquals("efgh", em.getText());
+            doc.insertString(4, "ijkl", null);  //2
+            assertEquals("efghijkl", em.getText());
+            doc.insertString(2, "AB", null);    //3
+            em.undo(new int[]{1});
+            assertEquals("ABijkl", em.getText());
+            em.redo(new int[]{0});
+            assertEquals("abcdABijkl", em.getText());
+            doc.insertString(5, "XY", null);    //4
+            assertEquals("abcdAXYBijkl", em.getText());
+            doc.remove(6, 4);                       //5
+            assertEquals("abcdAXkl", em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
