@@ -54,7 +54,10 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
         return;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> a592c8467c417d8e70adae44a48c96a298db6601
     
     public void insertUpdate(DocumentEvent e) {
 

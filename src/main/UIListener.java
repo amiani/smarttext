@@ -1,9 +1,19 @@
 package main;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileSystemView;
 
 public class UIListener {
 
@@ -46,56 +56,12 @@ public class UIListener {
 		return value < 0 ? false : true;
 	}
 
-	/**
-	 * Iterates through checkboxes and retrieves the Ids of those who are selected
-	 * in the form of an integer array
-	 * 
-	 * @param checkboxes
-	 * @return
-	 */
 
-	public int[] getSelectedIds(CheckBox[] checkboxes) {
-		int[] ids;
-		int selectedCheckboxes = 0;
-
-		// Finds the size of the ids array by iterating through the checkboxes and
-		// counting those which have been selected
-		for (int j = 0; j < checkboxes.length; j++) {
-			if (checkboxes[j].getSelected())
-				selectedCheckboxes++;
-		}
-
-		ids = new int[selectedCheckboxes];
-		int selectedId = 0;
-
-		// Adds ids of the selected checkboxes into the ids array
-		for (int i = 0; i < checkboxes.length; i++) {
-			if (checkboxes[i].getSelected()) {
-				ids[selectedId] = checkboxes[i].getEditId();
-				selectedId++;
-			}
-		}
-
-		return ids;
-	}
 
 	/**
 	 * -----------------------------------------------------------------------------
 	 * -------------------------------- LISTENERS ----------------------------------
 	 * -----------------------------------------------------------------------------
-	 * 
-	 * These listeners are in the form of Action objects. This was for simplicity as
-	 * the JSwing buttons can accept them as a single parameter and perform their
-	 * designated operation when clicked. The listeners associated with the
-	 * operations in the Model that require an integer array of ids ( undo(),
-	 * redo(), deleteEdits(), etc. ) are initialized with an array of custom Jswing
-	 * checkboxes. This was for testing purposes and I'm unsure how the UI will be
-	 * implemented so I left them as they may be of use. These listeners can be
-	 * easily reconfigured to be initialized with an integer array instead. If this
-	 * is the case the only change that should be made is removing the getSelected()
-	 * method and having the initalized integer array as the parameters in the
-	 * checkNegativeArr() and the associated EditManager and GroupManager methods.
-	 * 
 	 */
 
 	
@@ -105,19 +71,18 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleUndoAction extends AbstractAction {
+	public class HandleUndoAction implements ActionListener {
 
-		CheckBox[] edits;
+		int[] edits;
 		int[] ids;
 
-		HandleUndoAction(CheckBox[] edits) {
+		HandleUndoAction(int[] edits) {
 			this.edits = edits;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int[] ids = getSelectedIds(edits);
-			if (checkNegativeArr(ids)) {
+			if (checkNegativeArr(edits)) {
 
 				System.out.println("Undo Handled ");
 				em.undo(ids);
@@ -134,22 +99,19 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleRedoAction extends AbstractAction {
+	public class HandleRedoAction implements ActionListener {
 
-		CheckBox[] edits;
-		int[] ids;
+		int[] edits;
 
-		HandleRedoAction(CheckBox[] edits) {
+		HandleRedoAction(int[] edits) {
 			this.edits = edits;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int[] ids = getSelectedIds(edits);
-			if (checkNegativeArr(ids)) {
-
+			if (checkNegativeArr(edits)) {
 				System.out.println("redo Handled ");
-				em.redo(ids);
+				em.redo(edits);
 
 			} else {
 
@@ -164,21 +126,19 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleDeleteEditsAction extends AbstractAction {
-		CheckBox[] edits;
-		int[] ids;
+	public class HandleDeleteEditsAction implements ActionListener {
+		int[] edits;
 
-		HandleDeleteEditsAction(CheckBox[] edits) {
+		HandleDeleteEditsAction(int[] edits) {
 			this.edits = edits;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int[] ids = getSelectedIds(edits);
-			if (checkNegativeArr(ids)) {
+			if (checkNegativeArr(edits)) {
 				
 				System.out.println("Delete Edits Handled");
-				em.deleteEdits(ids);
+				em.deleteEdits(edits);
 				
 			} else {
 
@@ -262,23 +222,22 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleAddEditAction extends AbstractAction {
+	public class HandleAddEditAction implements ActionListener {
 
-		CheckBox[] edits;
+		int[] edits;
 		int groupId;
 
-		public HandleAddEditAction(int groupId, CheckBox[] edits) {
+		public HandleAddEditAction(int[] edits, int groupId) {
 			this.groupId = groupId;
 			this.edits = edits;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int[] ids = getSelectedIds(edits);
-			if (checkNegativeArr(ids) && checkNegativeVal(groupId)) {
+			if (checkNegativeArr(edits) && checkNegativeVal(groupId)) {
 
 				System.out.println("Add Edit Handled");
-				gm.addEdits(groupId, ids);
+				gm.addEdits(groupId, edits);
 
 			} else {
 
@@ -293,24 +252,22 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleRemoveEditAction extends AbstractAction {
+	public class HandleRemoveEditAction implements ActionListener {
 
-		CheckBox[] edits;
-		int[] ids;
+		int[] edits;
 		int groupId;
 
-		public HandleRemoveEditAction(int groupId, CheckBox[] edits) {
+		public HandleRemoveEditAction(int groupId, int[] edits) {
 			this.groupId = groupId;
 			this.edits = edits;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int[] ids = getSelectedIds(edits);
-			if (checkNegativeArr(ids) && checkNegativeVal(groupId)) {
+			if (checkNegativeArr(edits) && checkNegativeVal(groupId)) {
 
 				System.out.println("Remove Edit Handled");
-				gm.removeEdits(groupId, ids);
+				gm.removeEdits(groupId, edits);
 
 			} else {
 
@@ -352,129 +309,8 @@ public class UIListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//				handleSave();
+		
 		}
 	}
 	
-	
-	
-	/** ----------------------------------------------
-	 * --------Methods for UIListenerTest-------------
-	 * -----------------------------------------------
-	 */
-	
-	
-	public class HandleGetGroupsAction extends AbstractAction {
-
-		LinkedList<Group> groups;
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			System.out.println("Get Groups Handled");
-			groups = gm.getGroups();
-			for(int i = 0; i< groups.size(); i++) {
-				System.out.println(groups.get(i).getId());
-			}
-		}
-
-		public LinkedList<Group> getGroups() {
-			return groups;
-		}
-
-	}
-
-	
-	public void handleUndo(int[] editIds) {
-		if (checkNegativeArr(editIds)) {
-
-			System.out.println("Undo Handled ");
-			em.undo(editIds);
-			
-			
-		} else {
-
-		}
-	}
-
-	
-	public void handleRedo(int[] editIds) {
-		if (checkNegativeArr(editIds)) {
-
-			System.out.println("Redo Handled");
-			em.redo(editIds);
-			
-		} else {
-
-		}
-	}
-	
-	public void handleDeleteEdits(int[] editIds) {
-		if(checkNegativeArr(editIds)) {
-			em.deleteEdits(editIds);
-		}
-		else {
-			
-		}
-	}
-	
-	
-	public void handleGetEdits() {
-		em.getEdits();
-	}
-
-	
-	public void handleCreateGroup() {
-		gm.createGroup();
-	}
-
-	public void handleDeleteGroup(int groupId) {
-		if (checkNegativeVal(groupId)) {
-
-			System.out.println("Delete Group Handled");
-			gm.deleteGroup(groupId);
-			
-		} else {
-
-		}
-	}
-
-	
-	public void handleAddEdit(int groupId, int[] editIds) {
-		if (checkNegativeArr(editIds) && checkNegativeVal(groupId)) {
-
-			System.out.println("Add Edit Handled");
-			gm.addEdits(groupId, editIds);
-			
-		} else {
-
-		}
-	}
-	
-
-	public void handleRemoveEdit(int groupId, int[] editIds) {
-		if (checkNegativeArr(editIds) && checkNegativeVal(groupId)) {
-
-			System.out.println("Remove Edit Handled");
-			gm.removeEdits(groupId, editIds);
-			
-		} else {
-
-		}
-	}
-
-	
-	public void handleSave() {
-
-	}
-
-	
-	public void handleLoad(String fileName) {
-
-	}
-	
-	public LinkedList<Group> handleGetGroups(){
-		return gm.getGroups();
-	}
-
 }
