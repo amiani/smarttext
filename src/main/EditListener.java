@@ -11,6 +11,8 @@ public class EditListener implements DocumentListener {
         this.editManager = em;
     }
 
+    private EditType lastEdit;
+
     public void insertUpdate(DocumentEvent e) {
         Document doc = e.getDocument();
         try {
