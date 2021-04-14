@@ -151,7 +151,6 @@ public class EditManager {
             }
             i++;
         }
-        //Stream<FindResult> res = Stream.of(new FindResult(curr, i - 1, curr.length() - pos + position));
         return results.stream();
     }
 

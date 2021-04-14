@@ -214,9 +214,20 @@ public class EditManagerTest {
 
         LinkedList<Piece> pieces = new LinkedList<>();
         pieces.add(p1);
-        LinkedList<Piece> expected = new LinkedList<>();
         assertFalse(em.deleteText(pieces, 0, 4).get(0).isVisible());
 
+        pieces.clear();
+        pieces.add(p1);
+        pieces.add(p2);
+        assertFalse(em.deleteText(pieces, 0, 5).get(0).isVisible());
+        assertFalse(em.deleteText(pieces, 0, 5).get(1).isVisible());
+        assertTrue(em.deleteText(pieces, 0, 5).get(2).isVisible());
+
+        pieces.clear();
+        pieces.add(p3);
+        pieces.add(p4);
+        pieces.add(p5);
+        assertEquals(5, em.deleteText(pieces, 2, 4).size());
     }
 
     @Test
