@@ -35,7 +35,7 @@ class CheckBox extends JCheckBox{
 	}
 	
 	public int getEditId() {
-		return edit.getId();
+		return edit.id();
 	}
 	
 	public int getGroupId() {
