@@ -54,8 +54,13 @@ public class EditManager {
             pieceIds = new int[]{splits.get(0).get(0).id()};
         } else {
             int pre = splits.get(0).get(1).id();
-            int[] mid = splits.subList(1, splits.size() - 1).stream()
-                    .mapToInt(s -> s.get(0).id()).toArray();
+            int[] mid;
+            if (splits.size() > 2) {
+                mid = splits.subList(1, splits.size() - 1).stream()
+                        .mapToInt(s -> s.get(0).id()).toArray();
+            } else {
+                mid = new int[0];
+            }
             int post = splits.get(splits.size() - 1).get(0).id();
             pieceIds = new int[mid.length + 2];
             pieceIds[0] = pre;

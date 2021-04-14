@@ -216,6 +216,7 @@ public class EditManagerTest {
         pieces.add(p1);
         LinkedList<Piece> expected = new LinkedList<>();
         assertFalse(em.deleteText(pieces, 0, 4).get(0).isVisible());
+
     }
 
     @Test
