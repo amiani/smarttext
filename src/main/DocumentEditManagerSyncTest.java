@@ -98,6 +98,8 @@ public class DocumentEditManagerSyncTest {
             assertEquals("abcdAXYBijkl", em.getText());
             doc.remove(6, 4);                       //5
             assertEquals("abcdAXkl", em.getText());
+            doc.remove(2, 5);
+            assertEquals("abl", em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
