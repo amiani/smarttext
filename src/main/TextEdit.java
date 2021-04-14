@@ -27,6 +27,8 @@ public final class TextEdit extends JFrame implements ActionListener {
 	private static JTextArea area;
 	private static JFrame frame;
 	private static int returnValue = 0;
+	private EditManager editManager = new EditManager();
+	private EditListener editListener = new EditListener(editManager);
 	
 	public TextEdit() { run(); }
 	
@@ -51,6 +53,7 @@ public final class TextEdit extends JFrame implements ActionListener {
 		frame.add(scrollPane);
 		frame.setSize(640, 480);
 		frame.setVisible(true);
+		area.getDocument().addDocumentListener(editListener);
 		
 		 // Build the menu
 		JMenuBar menu_main = new JMenuBar();
@@ -76,7 +79,6 @@ public final class TextEdit extends JFrame implements ActionListener {
 
 	    frame.setJMenuBar(menu_main);
 	    frame.validate();
-
 	}
 	
   @Override
