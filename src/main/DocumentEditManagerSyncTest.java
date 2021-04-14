@@ -105,6 +105,27 @@ public class DocumentEditManagerSyncTest {
         }
     }
 
+    @Test
+    public void testSingleInsert() {
+        PlainDocument doc = new PlainDocument();
+        EditManager em = new EditManager();
+        EditListener el = new EditListener(em);
+        doc.addDocumentListener(el);
+        Edit.masterId = 0;
+
+        try {
+            doc.insertString(0, "a", null);  //0
+            doc.insertString(1, "b", null);  //0
+            doc.insertString(2, "c", null);  //0
+            doc.insertString(3, "d", null);  //0
+            assertEquals("abcd", em.getText());
+            doc.remove(1, 2);
+            assertEquals("ad", em.getText());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String getAllText(PlainDocument d) {
         try {
             return d.getText(0, d.getLength());
