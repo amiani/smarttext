@@ -53,11 +53,6 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
         }
         return;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> a592c8467c417d8e70adae44a48c96a298db6601
     
     public void insertUpdate(DocumentEvent e) {
 
@@ -68,5 +63,5 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
     }
 
     public void changedUpdate(DocumentEvent e) {}
->>>>>>> a592c84 (UIListener Created and almost finished)
+
 }

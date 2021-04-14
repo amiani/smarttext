@@ -9,12 +9,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 
 public class UIListenerTest {
 	int count = 0;
 	JLabel label;
-
+	JTextArea area;
+	
+	
 	public UIListenerTest() {
 
 //		Test on HandleGetEditsAction, HandleRemoveEditsAction, HandleAddEditsAction		
@@ -73,34 +76,38 @@ public class UIListenerTest {
 		JLabel creategroup = new JLabel("Create Groups");
 		JLabel getgroups = new JLabel("Get Groups");
 
-		CheckBox[] checkArr = new CheckBox[5];
-		
-		for(int i = 0; i < 5; i++) {
-			checkArr[i] = new CheckBox(new Edit(EditType.INSERT, null), null);
-		}
+//		CheckBox[] checkArr = new CheckBox[5];
+//		
+//		for(int i = 0; i < 5; i++) {
+//			checkArr[i] = new CheckBox(new Edit(EditType.INSERT, null), null);
+//		}
 		
 		
 
+		
 		UIListener listener = new UIListener();
 		
-		listener.handleCreateGroup();
-		listener.handleCreateGroup();
 		
-		UIListener.HandleGetGroupsAction getGroups = listener.new HandleGetGroupsAction();
-		UIListener.HandleCreateGroupAction CreateGroup = listener.new HandleCreateGroupAction();
-		UIListener.HandleDeleteGroupAction DeleteGroup = listener.new HandleDeleteGroupAction(0);
+		area = new JTextArea();
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.add(area);
+	    frame.setSize(10, 10);
+	        frame.setVisible(true);
+
 		
-		JButton buttonCreateGroup = new JButton(CreateGroup);
-		JButton buttonDeleteGroup = new JButton(DeleteGroup);		
-		JButton buttonGetGroups = new JButton(getGroups);
+
+	
+		
+		JButton buttonCreateGroup = new JButton("Save");
+		
+		buttonCreateGroup.addActionListener(listener.new HandleSaveAction(area));
+
 
 
 		panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 		panel.setLayout(new GridLayout(0, 1));
 		panel.add(creategroup);
 		panel.add(buttonCreateGroup);
-		panel.add(buttonDeleteGroup);
-		panel.add(buttonGetGroups);
 		
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

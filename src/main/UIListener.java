@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileSystemView;
 
 public class UIListener {
@@ -74,7 +75,6 @@ public class UIListener {
 	public class HandleUndoAction implements ActionListener {
 
 		int[] edits;
-		int[] ids;
 
 		HandleUndoAction(int[] edits) {
 			this.edits = edits;
@@ -85,7 +85,7 @@ public class UIListener {
 			if (checkNegativeArr(edits)) {
 
 				System.out.println("Undo Handled ");
-				em.undo(ids);
+				em.undo(edits);
 
 			} else {
 
@@ -283,7 +283,7 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleLoadAction extends AbstractAction {
+	public class HandleLoadAction implements ActionListener {
 
 		String filename;
 
@@ -305,11 +305,32 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleSaveAction extends AbstractAction {
+	public class HandleSaveAction implements ActionListener {
 
+		JTextArea area;
+		
+		public HandleSaveAction(JTextArea area) {
+			this.area = area;
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		
+		    JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		    jfc.setDialogTitle("Choose destination.");
+		    jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			
+		        try {
+		            File f = new File(jfc.getSelectedFile().getAbsolutePath());
+		            FileWriter out = new FileWriter(f);
+		            out.write(area.getText());
+		            out.close();
+		        } catch (FileNotFoundException ex) {
+		            Component f = null;
+		            JOptionPane.showMessageDialog(f,"File not found.");
+		        } catch (IOException ex) {
+		            Component f = null;
+		            JOptionPane.showMessageDialog(f,"Error.");
+		        }
 		}
 	}
 	
