@@ -80,6 +80,7 @@ public class DocumentEditManagerSyncTest {
         EditManager em = new EditManager();
         EditListener el = new EditListener(em);
         doc.addDocumentListener(el);
+        Edit.masterId = 0;
 
         try {
             doc.insertString(0, "abcd", null);  //0

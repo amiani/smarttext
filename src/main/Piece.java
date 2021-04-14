@@ -2,7 +2,7 @@ package main;
 
 public class Piece {
     private int id;
-    private static int masterId = 0;
+    protected static int masterId = 0;
     private String text;
 
     public boolean isVisible() {

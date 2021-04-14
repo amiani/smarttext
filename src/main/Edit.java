@@ -2,7 +2,7 @@ package main;
 
 public class Edit {
     private int id;
-    private static int masterId = 0;
+    protected static int masterId = 0;
     private boolean isUndone = false;
     private EditType type; //insert or delete
     private int[] pieces;
