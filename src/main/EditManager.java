@@ -19,6 +19,32 @@ public class EditManager {
         pieces = insertPiece(pieces, position, piece);
     }
 
+    public void delete(int position, int deleteLength) {
+        pieces = deleteText(pieces, position, deleteLength);
+    }
+
+    public LinkedList<Edit> getEdits(){
+        return edits;
+    }
+
+    public String getText(){
+        return pieces.stream()
+                .filter(Piece::isVisible)
+                .map(Piece::text)
+                .collect(Collectors.joining());
+    }
+
+    public void undo(int[] editIds){
+        pieces = togglePieces(pieces, toPieceIds(edits, editIds));
+    }
+    public void redo(int[] editIds){
+        undo(editIds);
+    }
+
+    public void deleteEdits(int[] editIds){
+        edits = removeEdits(edits, editIds);
+    }
+
     protected LinkedList<Piece> insertPiece(List<Piece> pieces, int position, Piece piece) {
         if (pieces.size() > 0) {
             FindResult result = findPieces(pieces, position, 0).toArray(FindResult[]::new)[0];
@@ -35,10 +61,6 @@ public class EditManager {
             nextPieces.add(piece);
             return nextPieces;
         }
-    }
-
-    public void delete(int position, int deleteLength) {
-        pieces = deleteText(pieces, position, deleteLength);
     }
 
     protected LinkedList<Piece> deleteText(List<Piece> pieces, int position, int deleteLength) {
@@ -76,31 +98,12 @@ public class EditManager {
         return replacePieces(pieces, indexes, splits);
     }
 
-    public LinkedList<Edit> getEdits(){
-        return edits;
-    }
-
-    public String getText(){
-        return pieces.stream()
-                .filter(Piece::isVisible)
-                .map(Piece::text)
-                .collect(Collectors.joining());
-    }
-
-    public void undo(int[] editIds){
-        pieces = togglePieces(pieces, toPieceIds(edits, editIds));
-    }
-
     protected int[] toPieceIds(List<Edit> edits, int[] editIds) {
         return edits.stream()
                 .filter(e -> Arrays.stream(editIds).anyMatch(id -> id == e.id()))
                 .flatMapToInt(e -> IntStream.of(e.pieces()))
                 .distinct()
                 .toArray();
-    }
-
-    public void redo(int[] editIds){
-        undo(editIds);
     }
 
     protected LinkedList<Piece> togglePieces(List<Piece> pieces, int[] pieceIds) {
@@ -112,10 +115,6 @@ public class EditManager {
                     }
                     return q; })
                 .collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    public void deleteEdits(int[] editIds){
-        edits = removeEdits(edits, editIds);
     }
 
     protected LinkedList<Edit> removeEdits(List<Edit> edits, int[] editIds) {
