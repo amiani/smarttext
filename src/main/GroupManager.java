@@ -53,8 +53,6 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
         }
         return;
     }
-<<<<<<< HEAD
-=======
-=======
->>>>>>> a592c84 (UIListener Created and almost finished)
+    
+
 }

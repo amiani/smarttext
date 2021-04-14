@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileSystemView;
 
 public class UIListener {
 
@@ -107,8 +112,7 @@ public class UIListener {
 
 	public class HandleUndoAction extends AbstractAction {
 
-		CheckBox[] edits;
-		int[] ids;
+		int[] edits;
 
 		HandleUndoAction(CheckBox[] edits) {
 			this.edits = edits;
@@ -120,7 +124,7 @@ public class UIListener {
 			if (checkNegativeArr(ids)) {
 
 				System.out.println("Undo Handled ");
-				em.undo(ids);
+				em.undo(edits);
 
 			} else {
 
@@ -326,7 +330,7 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleLoadAction extends AbstractAction {
+	public class HandleLoadAction implements ActionListener {
 
 		String filename;
 
@@ -348,106 +352,32 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleSaveAction extends AbstractAction {
+	public class HandleSaveAction implements ActionListener {
 
+		JTextArea area;
+		
+		public HandleSaveAction(JTextArea area) {
+			this.area = area;
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//				handleSave();
-		}
-	}
-	
-	
-	
-	/** ----------------------------------------------
-	 * --------Methods for UIListenerTest-------------
-	 * -----------------------------------------------
-	 */
-	
-	
-	public class HandleGetGroupsAction extends AbstractAction {
-
-		LinkedList<Group> groups;
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
+		    JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		    jfc.setDialogTitle("Choose destination.");
+		    jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 			
-			System.out.println("Get Groups Handled");
-			groups = gm.getGroups();
-			for(int i = 0; i< groups.size(); i++) {
-				System.out.println(groups.get(i).getId());
-			}
-		}
-
-		public LinkedList<Group> getGroups() {
-			return groups;
-		}
-
-	}
-
-	
-	public void handleUndo(int[] editIds) {
-		if (checkNegativeArr(editIds)) {
-
-			System.out.println("Undo Handled ");
-			em.undo(editIds);
-			
-			
-		} else {
-
-		}
-	}
-
-	
-	public void handleRedo(int[] editIds) {
-		if (checkNegativeArr(editIds)) {
-
-			System.out.println("Redo Handled");
-			em.redo(editIds);
-			
-		} else {
-
-		}
-	}
-	
-	public void handleDeleteEdits(int[] editIds) {
-		if(checkNegativeArr(editIds)) {
-			em.deleteEdits(editIds);
-		}
-		else {
-			
-		}
-	}
-	
-	
-	public void handleGetEdits() {
-		em.getEdits();
-	}
-
-	
-	public void handleCreateGroup() {
-		gm.createGroup();
-	}
-
-	public void handleDeleteGroup(int groupId) {
-		if (checkNegativeVal(groupId)) {
-
-			System.out.println("Delete Group Handled");
-			gm.deleteGroup(groupId);
-			
-		} else {
-
-		}
-	}
-
-	
-	public void handleAddEdit(int groupId, int[] editIds) {
-		if (checkNegativeArr(editIds) && checkNegativeVal(groupId)) {
-
-			System.out.println("Add Edit Handled");
-			gm.addEdits(groupId, editIds);
-			
-		} else {
-
+		        try {
+		            File f = new File(jfc.getSelectedFile().getAbsolutePath());
+		            FileWriter out = new FileWriter(f);
+		            out.write(area.getText());
+		            out.close();
+		        } catch (FileNotFoundException ex) {
+		            Component f = null;
+		            JOptionPane.showMessageDialog(f,"File not found.");
+		        } catch (IOException ex) {
+		            Component f = null;
+		            JOptionPane.showMessageDialog(f,"Error.");
+		        }
 		}
 	}
 	
