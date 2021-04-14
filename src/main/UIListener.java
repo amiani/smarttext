@@ -27,7 +27,6 @@ public class UIListener {
 	}
 
 	// ERROR HANLING METHODS
-
 	/**
 	 * Checks array to ensure there are no negative values in the provided array
 	 * 
@@ -283,7 +282,11 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
+<<<<<<< HEAD
 	public class HandleLoadAction implements ActionListener {
+=======
+	public class HandleLoadAction extends AbstractAction {
+>>>>>>> origin/userinterface
 
 		String filename;
 
