@@ -80,6 +80,10 @@ public class UIListener {
 		edits = e;
 		
 	}
+	
+	public void setAddEdits(int[] e) {
+		addedits = e;
+	}
 
 
 	/**

@@ -217,6 +217,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		   
 	while(true) {
 		listener.setEdits(editlist.getSelectedIndices());
+		listener.setAddEdits(defaulteditlist.getSelectedIndices());
 		
 	}
 
