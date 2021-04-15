@@ -9,19 +9,11 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -80,7 +72,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		
 		//Creation of default edit group
 		gm.createGroup();
-		Listener.setDefaultList(em.getEdits());
+		Listener.setDefaultList(em.edits());
 		Listener.setActiveList(Listener.getDefaultList());
 		
 		editlist= new JList(Listener.getActiveList().toArray());
@@ -279,7 +271,9 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 			editlist.setListData(Listener.getActiveList().toArray());
 		}
 		else {
-			Listener.setActiveList(gm.getEditList(grouplist.getSelectedIndex()));
+			int[] editIds = gm.getEditList(grouplist.getSelectedIndex()).stream()
+					.mapToInt(Integer::intValue).toArray();
+			Listener.setActiveList(em.edits(editIds));
 			if(Listener.getActiveList() != null) {
 				editlist.setListData(Listener.getActiveList().toArray());
 			}

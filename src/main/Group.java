@@ -4,37 +4,43 @@ import java.util.LinkedList;
 
 public class Group {
     private int id;
-    private LinkedList<Edit> edits;
+    private LinkedList<Integer> editIds = new LinkedList<>();
     public Group(){
         id = 0;
-        edits = new LinkedList<Edit>();
     }
     public Group(int id){
         this.id = id;
-        edits = new LinkedList<Edit>();
     }
     
     //New constructor to create group with data
-    public Group(int id, LinkedList<Edit> edits) {
+    public Group(int id, int[] editIds) {
     	this.id = id;
-    	this.edits = edits;
+    	this.editIds = new LinkedList<Integer>();
+    	for (int i = 0; i != editIds.length; i++) {
+    	    this.editIds.add(editIds[i]);
+        }
     }
     
-    public LinkedList<Edit> getEdits(){
-    	return edits;
+    public LinkedList<Integer> edits() {
+    	return editIds;
     }
     
-    public int getId(){
+    public int id(){
         return id;
     }
-    public void addEdits(int[] editIds){
-    	//Listener.getActiveList().add
-        return;
-    }
-    public void removeEdits(int[] editIds){
 
-        return;
+    public void addEdits(int[] editIds){
+        for (int i = 0; i != editIds.length; i++) {
+            this.editIds.add(editIds[i]);
+        }
     }
+
+    public void removeEdits(int[] editIds){
+        for (int i = 0; i != editIds.length; i++) {
+            this.editIds.remove(editIds[i]);
+        }
+    }
+
     public String toString() {
     	if(id == 0) {
     		return "Default Group";

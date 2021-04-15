@@ -24,8 +24,14 @@ public class EditManager {
         pieces = deleteText(pieces, position, deleteLength);
     }
 
-    public LinkedList<Edit> getEdits(){
+    public LinkedList<Edit> edits(){
         return edits;
+    }
+
+    public LinkedList<Edit> edits(int[] editIds) {
+        return edits.stream()
+                .filter(e -> Arrays.stream(editIds).anyMatch(id -> id == e.id()))
+                .collect(Collectors.toCollection(LinkedList<Edit>::new));
     }
 
     public String getText(){

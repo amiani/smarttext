@@ -15,10 +15,10 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     	return groups;
     }
     
-    public LinkedList<Edit> getEditList(int groupindex){
+    public LinkedList<Integer> getEditList(int groupindex){
     	  for(int i=0;i<groups.size();i++){
-              if(groups.get(i).getId() == groupindex){
-                 return groups.get(i).getEdits();
+              if(groups.get(i).id() == groupindex){
+                 return groups.get(i).edits();
               }
               
     	  }
@@ -29,13 +29,13 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     public int createGroup(){
         //find id of the last element and add +1 to the value to get new id
     	try {
-        int lastElementId = groups.getLast().getId();
+        int lastElementId = groups.getLast().id();
         Group newGroup = new Group(lastElementId+1);
         groups.add(newGroup);
         return lastElementId+1;
     	}catch(NoSuchElementException e) {
     		System.out.println("No last element. Creating new initial group");
-    		Group defaultGroup = new Group(0, Listener.getDefaultList());
+    		Group defaultGroup = new Group(0, new int[]{});
     		groups.add(defaultGroup);
     		return 0;
     	}
@@ -44,7 +44,7 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     public void deleteGroup(int groupId){
         //iterate to find group with matching group id, and then delete id
         for(int i=0;i<groups.size();i++){
-            if(groups.get(i).getId() == groupId){
+            if(groups.get(i).id() == groupId){
                 groups.remove(i);
                 return;
             }
@@ -53,13 +53,10 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     }
     public void addEdits(int groupId, int[] editIds){
         //iterate to find group with matching group id, and then add edits to it
-        for(int i=0;i<groups.size();i++){
-            if(groups.get(i).getId() == groupId){
-                
-            	
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).id() == groupId){
             	System.out.println("Trying to add to group");
             	groups.get(i).addEdits(editIds);
-            	Listener.setActiveList(groups.get(i).getEdits());
                 return;
             }
         }
@@ -69,7 +66,7 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     public void removeEdits(int groupId, int[] editIds){
         //iterate to find group with matching group id, and then remove edits from it
         for(int i=0;i<groups.size();i++){
-            if(groups.get(i).getId() == groupId){
+            if(groups.get(i).id() == groupId){
                 groups.get(i).removeEdits(editIds);
                 return;
             }
