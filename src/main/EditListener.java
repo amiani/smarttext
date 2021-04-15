@@ -30,7 +30,7 @@ public class EditListener extends Listener implements DocumentListener {
             	System.out.println("Adding Edit: "+ text);
             	editManager.insert(position, text);
             //System.out.println(position + ": " + text);
-            	editlist.setListData(editManager.getEdits().toArray());
+            	editlist.setListData(editManager.edits().toArray());
         	}
             
         } catch (BadLocationException badLocationException) {

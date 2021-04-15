@@ -9,19 +9,11 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,7 +63,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	    area = new JTextArea();
 		em = new EditManager();
 		
-		editlist= new JList(em.getEdits().toArray());
+		editlist= new JList(em.edits().toArray());
 	    
 		listener = new UIListener(em, new int[] {}, area);
 	    editlisten = new EditListener(em, editlist);

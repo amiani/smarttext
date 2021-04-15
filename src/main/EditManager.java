@@ -23,9 +23,7 @@ public class EditManager {
         pieces = deleteText(pieces, position, deleteLength);
     }
 
-    public LinkedList<Edit> getEdits(){
-        return edits;
-    }
+    public LinkedList<Edit> edits(){ return edits; }
 
     public String getText(){
         return pieces.stream()

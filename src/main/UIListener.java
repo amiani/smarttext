@@ -1,21 +1,11 @@
 package main;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import javax.swing.filechooser.FileSystemView;
 
 public class UIListener extends Listener {
 
@@ -185,7 +175,7 @@ public class UIListener extends Listener {
 		public void actionPerformed(ActionEvent e) {
 			
 			System.out.println("Get Edits Handled");
-			edits = em.getEdits();
+			edits = em.edits();
 		}
 
 		public LinkedList<Edit> getEdits() {
@@ -261,6 +251,7 @@ public class UIListener extends Listener {
 			if (checkNegativeArr(edits) && checkNegativeVal(groupId)) {
 
 				System.out.println("Add Edit Handled");
+				em.edits();
 				gm.addEdits(groupId, edits);
 
 			} else {
