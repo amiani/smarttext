@@ -8,8 +8,8 @@ import java.util.LinkedList;
 */
 public abstract class Listener {
 	private static boolean active = true;
-	private static LinkedList<Edit> defaultlist = null;
-	private static LinkedList<Edit> activelist = null;
+	private static LinkedList<Edit> defaultlist = new LinkedList<>();
+	private static LinkedList<Edit> activelist = new LinkedList<>();
 	
 	
 	public static void setDefaultList(LinkedList<Edit> e) {
