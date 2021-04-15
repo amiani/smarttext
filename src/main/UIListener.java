@@ -383,8 +383,8 @@ public class UIListener {
 	}
 
 	/**
-	 * The Listener associated with the save method in the FileIO FileIO not yet
-	 * implemented
+	 * The Listener associated with the save, load, quit and new methods in the FileIO.  Derived from the website provided
+	 * at the beginning of the semester : https://opensource.com/article/20/12/write-your-own-text-editor
 	 * 
 	 * @author Brandon
 	 */
