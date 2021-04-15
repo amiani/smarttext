@@ -72,7 +72,7 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	    }
 		em = new EditManager();
 		editlisten = new EditListener(em);
-	    listener = new UIListener(em);
+	    listener = new UIListener();
 	    
 	    
 	    
@@ -194,12 +194,16 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 			JMenuItem menuitem_save = new JMenuItem ("Save");
 			JMenuItem menuitem_quit = new JMenuItem ("Quit");
 			
+			menuitem_save.addActionListener(listener.new HandleSaveAction(area));
+			menuitem_open.addActionListener(listener.new HandleLoadAction(area));
+			
 			/*
 			menuitem_new.addActionListener(this);
 			menuitem_open.addActionListener(this);
 			menuitem_save.addActionListener(this);
 			menuitem_quit.addActionListener(this);
 		*/
+			
 			 menu_main.add(menu_file);
 
 		        menu_file.add(menuitem_new);
@@ -294,5 +298,10 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	public void changedUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	public static void main(String[] arg) {
+		new UserInterface();
 	}
 }

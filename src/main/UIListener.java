@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
@@ -56,15 +58,12 @@ public class UIListener {
 		return value < 0 ? false : true;
 	}
 
-
-
 	/**
 	 * -----------------------------------------------------------------------------
 	 * -------------------------------- LISTENERS ----------------------------------
 	 * -----------------------------------------------------------------------------
 	 */
 
-	
 	/**
 	 * The Listener associated with the undo method in the EditManager
 	 * 
@@ -118,7 +117,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the deleteEdits method in the EditManager
 	 * 
@@ -135,30 +133,29 @@ public class UIListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (checkNegativeArr(edits)) {
-				
+
 				System.out.println("Delete Edits Handled");
 				em.deleteEdits(edits);
-				
+
 			} else {
 
 			}
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the getEdits method in the EditManager
 	 * 
 	 * @author Brandon
 	 */
 
-	public class HandleGetEditsAction extends AbstractAction {
+	public class HandleGetEditsAction implements ActionListener {
 
 		LinkedList<Edit> edits;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			System.out.println("Get Edits Handled");
 			edits = em.getEdits();
 		}
@@ -169,31 +166,29 @@ public class UIListener {
 
 	}
 
-	
 	/**
 	 * The Listener associated with the CreateGroup method in the GroupManager
 	 * 
 	 * @author Brandon
 	 */
 
-	public class HandleCreateGroupAction extends AbstractAction {
+	public class HandleCreateGroupAction implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			System.out.println("Create Group Handled");
 			gm.createGroup();
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the deleteGroup method in the GroupManager
 	 * 
 	 * @author Brandon
 	 */
 
-	public class HandleDeleteGroupAction extends AbstractAction {
+	public class HandleDeleteGroupAction implements ActionListener {
 
 		int groupId;
 
@@ -214,7 +209,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the addEdits method in the GroupManager
 	 * 
@@ -244,7 +238,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the removeEdits method in the GroupManager
 	 * 
@@ -274,7 +267,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the load method in the FileIO FileIO not yet
 	 * implemented
@@ -282,25 +274,45 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-<<<<<<< HEAD
-	public class HandleLoadAction implements ActionListener {
-=======
 	public class HandleLoadAction extends AbstractAction {
->>>>>>> origin/userinterface
+		int returnValue = 0;
+		String ingest;
+		JTextArea area;
 
 		String filename;
 
-		public HandleLoadAction(String filename) {
-			this.filename = filename;
+		public HandleLoadAction(JTextArea area) {
+			this.area = area;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//				handleLoad(filename);
+			JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			jfc.setDialogTitle("Choose destination.");
+			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+			returnValue = jfc.showOpenDialog(null);
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File f = new File(jfc.getSelectedFile().getAbsolutePath());
+				try {
+					FileReader read = new FileReader(f);
+					Scanner scan = new Scanner(read);
+					while (scan.hasNextLine()) {
+						String line = scan.nextLine() + "\n";
+						System.out.println(line);
+						if(ingest == null) {
+							ingest = line;
+						}
+						else ingest = ingest + line;
+					}
+					area.setText(ingest);
+				} catch (FileNotFoundException ex) {
+					ex.printStackTrace();
+				}
+			}
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the save method in the FileIO FileIO not yet
 	 * implemented
@@ -310,31 +322,34 @@ public class UIListener {
 
 	public class HandleSaveAction implements ActionListener {
 
+		int returnValue;
 		JTextArea area;
-		
+
 		public HandleSaveAction(JTextArea area) {
 			this.area = area;
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-		    jfc.setDialogTitle("Choose destination.");
-		    jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			
-		        try {
-		            File f = new File(jfc.getSelectedFile().getAbsolutePath());
-		            FileWriter out = new FileWriter(f);
-		            out.write(area.getText());
-		            out.close();
-		        } catch (FileNotFoundException ex) {
-		            Component f = null;
-		            JOptionPane.showMessageDialog(f,"File not found.");
-		        } catch (IOException ex) {
-		            Component f = null;
-		            JOptionPane.showMessageDialog(f,"Error.");
-		        }
+			JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			jfc.setDialogTitle("Choose destination.");
+			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+			returnValue = jfc.showSaveDialog(null);
+			try {
+				File f = new File(jfc.getSelectedFile().getAbsolutePath());
+				FileWriter out = new FileWriter(f);
+				out.write(area.getText());
+				out.close();
+			} catch (FileNotFoundException ex) {
+				Component f = null;
+				JOptionPane.showMessageDialog(f, "File not found.");
+			} catch (IOException ex) {
+				Component f = null;
+				JOptionPane.showMessageDialog(f, "Error.");
+			} catch (NullPointerException ex) {
+			}
 		}
 	}
-	
+
 }
