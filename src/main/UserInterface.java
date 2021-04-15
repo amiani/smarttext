@@ -208,10 +208,12 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
    
 	while(true) {
 				
-			
+	while(!listener.getUndoWaiting()) {		
 	listener.setEdits(editlist.getSelectedIndices());
-		
-		
+	}
+	area.replaceRange(em.getText(), 0, area.getText().length());
+	editlist.setListData(em.getEdits().toArray());
+	listener.setUndoWaiting(false);
 	}
 
 	}

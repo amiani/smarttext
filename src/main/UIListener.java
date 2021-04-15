@@ -21,7 +21,7 @@ public class UIListener {
 	EditManager em;
 	GroupManager gm;
 	private int[] edits;
-	
+	private boolean undoWaiting = false;
 
 	public UIListener(EditManager e, int[] edits) {
 		em = e;
@@ -49,7 +49,14 @@ public class UIListener {
 		return true;
 	}
 
-
+	public boolean getUndoWaiting() {
+		return undoWaiting;
+	}
+	
+	public void setUndoWaiting(boolean e) {
+		undoWaiting = e;
+	}
+	
 	
 	/**
 	 * Checks value to ensure it is not negative. Implemented solely to make code
@@ -63,8 +70,10 @@ public class UIListener {
 		return value < 0 ? false : true;
 	}
 
-	public void setEdits(int[] e) {	
+	public void setEdits(int[] e) {
+		
 		edits = e;
+		
 	}
 
 
@@ -98,7 +107,7 @@ public class UIListener {
 				System.out.println(Arrays.toString(UIListener.this.edits));
 				
 				em.undo(UIListener.this.edits);
-				System.out.println(em.getText());
+				undoWaiting = true;
 
 			} else {
 
