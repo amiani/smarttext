@@ -21,11 +21,13 @@ public class UIListener {
 	EditManager em;
 	GroupManager gm;
 	private int[] edits;
+	
 
 	public UIListener(EditManager e, int[] edits) {
 		em = e;
 		gm = new GroupManager();
 		this.edits = edits;
+		
 	}
 
 	// ERROR HANLING METHODS
@@ -47,6 +49,8 @@ public class UIListener {
 		return true;
 	}
 
+
+	
 	/**
 	 * Checks value to ensure it is not negative. Implemented solely to make code
 	 * more understandable as oppose to having if(value < 1) everywhere.
@@ -59,13 +63,8 @@ public class UIListener {
 		return value < 0 ? false : true;
 	}
 
-	public void setEdits(int[] e) {
-		System.out.println(e.length);
-		
-			System.out.println(Arrays.toString(e));
-		
+	public void setEdits(int[] e) {	
 		edits = e;
-		System.out.println(edits.length);
 	}
 
 
@@ -99,6 +98,7 @@ public class UIListener {
 				System.out.println(Arrays.toString(UIListener.this.edits));
 				
 				em.undo(UIListener.this.edits);
+				System.out.println(em.getText());
 
 			} else {
 

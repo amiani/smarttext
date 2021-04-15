@@ -14,9 +14,8 @@ public class Edit {
     }
    
     public String toString() {
-    	return "Im an edit";
+        return "Edit #".concat(String.valueOf(id));
     }
-	
     public int id(){
         return id;
     }

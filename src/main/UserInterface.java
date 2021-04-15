@@ -9,7 +9,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 
 import java.util.LinkedList;
-
+import java.util.NoSuchElementException;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -26,6 +26,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class UserInterface extends JFrame implements Runnable, ActionListener, ListSelectionListener, DocumentListener{
+	private Thread t;
+	
 	private static JPanel textarea;
 	private static JPanel editarea;
 	private static JPanel editoptions;
@@ -51,9 +53,10 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	private static LinkedList<String> activegroup;
 	
 	
-	public UserInterface() { run(); }
+	public UserInterface() { }
 	
 	public void run() {
+		
 		frame = new JFrame("SmartText");
 		frame.setPreferredSize(new Dimension(800, 400));
 
@@ -73,7 +76,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	    //Creation of the text field
 	    textarea = new JPanel(new BorderLayout());
 	    textarea.setBorder(new TitledBorder ( new EtchedBorder(), "Text Area"));
-		area = new JTextArea();
+		area = new JTextArea(em.getText());
 		area.getDocument().addDocumentListener(editlisten);
 		area.getDocument().addDocumentListener(this);
 		JScrollPane textscroll = new JScrollPane();
@@ -110,7 +113,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		groupscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	
 		//grouplist.addListSelectionListener(this);
-		editlist.addListSelectionListener(this);
+		//editlist.addListSelectionListener(this);
 		
 		
 		JPanel listarea = new JPanel();
@@ -131,17 +134,17 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		
 		
 		undobutton.addActionListener(listener.new HandleUndoAction(editlist.getSelectedIndices()));
-		undobutton.addActionListener(this);
+		
 		
 		
 		groupbutton = new JButton("Create Group");
 		groupbutton.addActionListener(listener.new HandleCreateGroupAction());
-		groupbutton.addActionListener(this);
+		
 		
 		
 		delbutton = new JButton("Delete Edit");
 		delbutton.addActionListener(listener.new HandleDeleteEditsAction(editlist.getSelectedIndices()));
-		delbutton.addActionListener(this);
+		
 		
 		
 		managebutton = new JButton("Manage Group");
@@ -149,9 +152,8 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		
 		deletegroup = new JButton("Delete Group");
 		deletegroup.addActionListener(listener.new HandleDeleteGroupAction(grouplist.getSelectedIndex()));
-		deletegroup.addActionListener(this);
 		
-		groupbutton.addActionListener(this);
+		
 		managebutton.addActionListener(this);
 		
 		editoptions.add(undobutton);
@@ -201,7 +203,17 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		    menu_file.add(menuitem_save);
 		    menu_file.add(menuitem_quit);
 
-		        frame.setJMenuBar(menu_main);
+	
+		    frame.setJMenuBar(menu_main);
+   
+	while(true) {
+				
+			
+	listener.setEdits(editlist.getSelectedIndices());
+		
+		
+	}
+
 	}
 	
 	//Popup window to edit groups
@@ -244,10 +256,17 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		
 	}
 	
+	public void start() {
+		System.out.println("Starting UIThread");
+		if(t == null) {
+			t = new Thread(this, "uithread");
+			t.start();
+		}
+	}
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		listener.setEdits(editlist.getSelectedIndices());
+		//listener.setEdits(editlist.getSelectedIndices());
 		//area.setText(em.getText());
 	}
 
@@ -256,7 +275,17 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	public void actionPerformed(ActionEvent e) {
 		//update editlist
 		
+		/*
+		try {	
+			Thread.sleep(10);
+			
+		}
+		catch (InterruptedException a) {
+			System.out.println("Thread " +  "uithread"  + " interrupted.");
+		}
+		*/
 		//area.setText(em.getText());
+		System.out.println(em.getText());
 		String ae = e.getActionCommand();
 
 		if(ae.equals("Manage Group")) {

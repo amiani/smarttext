@@ -35,6 +35,7 @@ public class EditManager {
     }
 
     public void undo(int[] editIds){
+    	System.out.println(Arrays.toString(editIds));
         pieces = togglePieces(pieces, toPieceIds(edits, editIds));
     }
     public void redo(int[] editIds){
@@ -197,7 +198,12 @@ public class EditManager {
     protected LinkedList<Piece> replacePieces(List<Piece> pieces, int index, ArrayList<Piece> splits) {
         return replacePieces(pieces, new int[]{index}, new ArrayList<>(Collections.singleton(splits)));
     }
+    
+
+    
 }
+
+
 
 class FindResult {
     public final Piece piece;
