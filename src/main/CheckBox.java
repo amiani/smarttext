@@ -2,9 +2,6 @@ package main;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 
 /** Custom made Checkbox that extends the checkbox from Jswing. Can be discarded/replaced but I kept it because it was used for testing
@@ -39,7 +36,7 @@ class CheckBox extends JCheckBox{
 	}
 	
 	public int getGroupId() {
-		return group.getId();
+		return group.id();
 	}
 	
 }

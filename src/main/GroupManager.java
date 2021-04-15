@@ -12,7 +12,7 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
 
     public int createGroup(){
         //find id of the last element and add +1 to the value to get new id
-        int lastElementId = groups.getLast().getId();
+        int lastElementId = groups.getLast().id();
         Group newGroup = new Group(lastElementId+1);
         groups.add(newGroup);
         return lastElementId+1;
@@ -21,17 +21,18 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     public void deleteGroup(int groupId){
         //iterate to find group with matching group id, and then delete id
         for(int i=0;i<groups.size();i++){
-            if(groups.get(i).getId() == groupId){
+            if(groups.get(i).id() == groupId){
                 groups.remove(i);
                 return;
             }
         }
         return;
     }
+
     public void addEdits(int groupId, int[] editIds){
         //iterate to find group with matching group id, and then add edits to it
         for(int i=0;i<groups.size();i++){
-            if(groups.get(i).getId() == groupId){
+            if(groups.get(i).id() == groupId){
                 groups.get(i).addEdits(editIds);
                 return;
             }
@@ -42,7 +43,7 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     public void removeEdits(int groupId, int[] editIds){
         //iterate to find group with matching group id, and then remove edits from it
         for(int i=0;i<groups.size();i++){
-            if(groups.get(i).getId() == groupId){
+            if(groups.get(i).id() == groupId){
                 groups.get(i).removeEdits(editIds);
                 return;
             }
