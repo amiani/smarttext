@@ -22,7 +22,6 @@ public class UIListener {
 	EditManager em;
 	GroupManager gm;
 	private int[] edits;
-	private boolean undoWaiting = false;
 	private int[] emptyedits = {};
 	private static JTextArea area;
 
@@ -51,16 +50,6 @@ public class UIListener {
 			}
 		}
 		return true;
-	}
-	
-
-
-	public boolean getUndoWaiting() {
-		return undoWaiting;
-	}
-	
-	public void setUndoWaiting(boolean e) {
-		undoWaiting = e;
 	}
 	
 	
@@ -115,8 +104,6 @@ public class UIListener {
 				em.undo(UIListener.this.edits);
 				System.out.println(em.getText());
 				area.replaceRange(em.getText(), 0, area.getText().length());
-				//edits = emptyedits;
-				//undoWaiting = true;
 
 			} else {
 				System.out.println("No edit selected");
