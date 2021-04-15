@@ -19,6 +19,9 @@ public class Group {
     public int id(){
         return id;
     }
+
+    public LinkedList<Edit> edits() { return edits; }
+
     public void addEdits(int[] editIds){
 
         return;
