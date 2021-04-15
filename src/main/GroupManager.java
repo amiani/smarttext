@@ -40,7 +40,7 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
     }
 
     public Group findFromIndex(int findIndex){
-        if(groups.size() >= findIndex){
+        if(groups.size() > findIndex){
             return groups.get(findIndex);
         }
         return null;
