@@ -22,6 +22,7 @@ public class UIListener {
 	GroupManager gm;
 	private int[] edits;
 	private boolean undoWaiting = false;
+	private int[] emptyedits = {};
 
 	public UIListener(EditManager e, int[] edits) {
 		em = e;
@@ -48,6 +49,8 @@ public class UIListener {
 		}
 		return true;
 	}
+	
+
 
 	public boolean getUndoWaiting() {
 		return undoWaiting;
@@ -97,21 +100,24 @@ public class UIListener {
 			edits = e;
 		}
 		
-	
+	//Added array length clause so edits must be selected for undo
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (checkNegativeArr(UIListener.this.edits)) {
+			if (checkNegativeArr(UIListener.this.edits) && UIListener.this.edits.length != 0) {
 
 				System.out.println("Undo Handled ");
 		
-				System.out.println(Arrays.toString(UIListener.this.edits));
+				//System.out.println(Arrays.toString(UIListener.this.edits));
 				
 				em.undo(UIListener.this.edits);
+				edits = emptyedits;
 				undoWaiting = true;
 
 			} else {
-
+				System.out.println("No edit selected");
 			}
+
+			
 		}
 	}
 

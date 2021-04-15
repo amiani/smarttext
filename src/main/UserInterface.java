@@ -153,6 +153,9 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		deletegroup = new JButton("Delete Group");
 		deletegroup.addActionListener(listener.new HandleDeleteGroupAction(grouplist.getSelectedIndex()));
 		
+		JButton dumb = new JButton("output gettext");
+		dumb.addActionListener(this);
+		
 		
 		managebutton.addActionListener(this);
 		
@@ -161,6 +164,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		editoptions.add(groupbutton);
 		editoptions.add(managebutton);
 		editoptions.add(deletegroup);
+		editoptions.add(dumb);
 		
 		
 		
@@ -207,13 +211,17 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		    frame.setJMenuBar(menu_main);
    
 	while(true) {
-				
-	while(!listener.getUndoWaiting()) {		
-	listener.setEdits(editlist.getSelectedIndices());
-	}
-	area.replaceRange(em.getText(), 0, area.getText().length());
-	editlist.setListData(em.getEdits().toArray());
-	listener.setUndoWaiting(false);
+	
+		//Main stalls here while waiting for a queued undo.
+		while(!listener.getUndoWaiting()) {		
+				listener.setEdits(editlist.getSelectedIndices());
+		}
+		area.replaceRange(em.getText(), 0, area.getText().length());
+		editlist.setListData(em.getEdits().toArray());
+		
+		listener.setUndoWaiting(false);
+		System.out.println(em.getEdits().toString());
+		continue;
 	}
 
 	}
@@ -272,9 +280,10 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		//area.setText(em.getText());
 	}
 
+	
 	//Functionality for popup windows via creategroup/managegroup
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {}
 		//update editlist
 		
 		/*
@@ -285,11 +294,13 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		catch (InterruptedException a) {
 			System.out.println("Thread " +  "uithread"  + " interrupted.");
 		}
-		*/
+		
 		//area.setText(em.getText());
-		System.out.println(em.getText());
+		//System.out.println(em.getText());
 		String ae = e.getActionCommand();
-
+		if(ae.equals("output gettext")){
+			System.out.println(em.getText());
+		}
 		if(ae.equals("Manage Group")) {
 			if(grouplist.getSelectedValue() != null) {
 				String group = grouplist.getSelectedValue().toString();
@@ -297,6 +308,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 			}
 		}
 	}
+	*/
 
 	//Document listeners to update the editlist
 	@Override
@@ -307,7 +319,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		editlist.setListData(em.getEdits().toArray());
+		//editlist.setListData(em.getEdits().toArray());
 		
 	}
 
