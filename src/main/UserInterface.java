@@ -101,7 +101,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	    textarea = new JPanel(new BorderLayout());
 	    textarea.setBorder(new TitledBorder ( new EtchedBorder(), "Text Area"));
 		area.getDocument().addDocumentListener(editlisten);
-	//area.getDocument().addDocumentListener(this);
+		//area.getDocument().addDocumentListener(this);
 		JScrollPane textscroll = new JScrollPane();
 		textscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		textscroll.setViewportView(area);

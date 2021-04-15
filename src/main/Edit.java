@@ -14,7 +14,8 @@ public class Edit {
     }
    
     public String toString() {
-        return "Edit #".concat(String.valueOf(id));
+        return "Edit " + id + " "
+                + (isUndone ? "x" : "✓");
     }
     public int id(){
         return id;
