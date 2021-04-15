@@ -54,7 +54,7 @@ public class UIListener {
 	 * @return
 	 */
 
-	private boolean checkNegativeVal(int value) {
+	public boolean checkNegativeVal(int value) {
 		return value < 0 ? false : true;
 	}
 
@@ -363,6 +363,7 @@ public class UIListener {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("New Handled");
 			area.setText("");
 		}	
 	}
@@ -373,6 +374,7 @@ public class UIListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("Quit Handled");
 			System.exit(0);
 		}
 		
