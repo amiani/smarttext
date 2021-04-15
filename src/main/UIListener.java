@@ -174,8 +174,9 @@ public class UIListener {
 				
 				System.out.println("Delete Edits Handled");
 				em.deleteEdits(UIListener.this.edits);
-				
-				editlist.setListData(Listener.getActiveList().toArray());
+				LinkedList<Edit> eds = em.edits();
+				Listener.setActiveList(eds);
+				editlist.setListData(eds.toArray());
 				
 			} else {
 
@@ -246,7 +247,7 @@ public class UIListener {
 
 				System.out.println("Delete Group Handled");
 				gm.deleteGroup(grouplist.getSelectedIndex());
-				
+
 				Listener.setActiveList(Listener.getDefaultList());
 				
 				grouplist.setListData(gm.getGroups().toArray());

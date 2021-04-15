@@ -17,7 +17,6 @@ public class EditManager {
         Edit newEdit = new Edit(INSERT, new int[]{piece.id()});
         edits.add(newEdit);
         pieces = insertPiece(pieces, position, piece);
-        
     }
 
     public void delete(int position, int deleteLength) {

@@ -286,6 +286,4 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 			}
 		}
 	}
-	
-
 }
