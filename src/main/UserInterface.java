@@ -67,16 +67,16 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
 	      Logger.getLogger(UserInterface.class.getName()).log(Level.SEVERE, null, ex);
 	    }
+	    area = new JTextArea();
 		em = new EditManager();
 		editlisten = new EditListener(em);
-	    listener = new UIListener(em, new int[] {});
+	    listener = new UIListener(em, new int[] {}, area);
 	    
 	    
 	    
 	    //Creation of the text field
 	    textarea = new JPanel(new BorderLayout());
 	    textarea.setBorder(new TitledBorder ( new EtchedBorder(), "Text Area"));
-		area = new JTextArea(em.getText());
 		area.getDocument().addDocumentListener(editlisten);
 		area.getDocument().addDocumentListener(this);
 		JScrollPane textscroll = new JScrollPane();
@@ -211,17 +211,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		    frame.setJMenuBar(menu_main);
    
 	while(true) {
-	
-		//Main stalls here while waiting for a queued undo.
-		while(!listener.getUndoWaiting()) {		
-				listener.setEdits(editlist.getSelectedIndices());
-		}
-		area.replaceRange(em.getText(), 0, area.getText().length());
-		editlist.setListData(em.getEdits().toArray());
-		
-		listener.setUndoWaiting(false);
-		System.out.println(em.getEdits().toString());
-		continue;
+		listener.setEdits(editlist.getSelectedIndices());
 	}
 
 	}

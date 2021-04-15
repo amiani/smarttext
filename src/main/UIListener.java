@@ -14,6 +14,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileSystemView;
 
 public class UIListener {
@@ -23,11 +24,13 @@ public class UIListener {
 	private int[] edits;
 	private boolean undoWaiting = false;
 	private int[] emptyedits = {};
+	private static JTextArea area;
 
-	public UIListener(EditManager e, int[] edits) {
+	public UIListener(EditManager e, int[] edits, JTextArea area) {
 		em = e;
 		gm = new GroupManager();
 		this.edits = edits;
+		this.area = area;
 		
 	}
 
@@ -110,8 +113,10 @@ public class UIListener {
 				//System.out.println(Arrays.toString(UIListener.this.edits));
 				
 				em.undo(UIListener.this.edits);
-				edits = emptyedits;
-				undoWaiting = true;
+				System.out.println(em.getText());
+				area.replaceRange(em.getText(), 0, area.getText().length());
+				//edits = emptyedits;
+				//undoWaiting = true;
 
 			} else {
 				System.out.println("No edit selected");
