@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -18,11 +19,19 @@ import main.UIListener.HandleAddEditAction;
 import main.UIListener.HandleSaveAction;
 
 class UIListenerUnitTest {
-
+	
+	EditManager em = new EditManager();
+	GroupManager gm = new GroupManager();
+	int[] edits = new int[0];
+	JTextArea area = new JTextArea();
+	JList editList = new JList();
+	JList groupList = new JList();
+	JList groupContentList = new JList();
+	
+	UIListener listener = new UIListener(em, gm, edits, area, editList, groupList, groupContentList);
+	
 	@Test
 	void testCheckNegativeArray() {
-
-		UIListener listener = new UIListener();
 
 		int[] testArr1 = {2, 18, 12};
 		int[] testArr2 = {4, 6, 17, 72};
@@ -71,7 +80,6 @@ class UIListenerUnitTest {
 	
 	
 	public void checkNegativeValTest() {
-		UIListener listener =  new UIListener();
 		
 		int value1 = 4;
 		int value2 = 3;
@@ -127,8 +135,15 @@ class UIListenerUnitTest {
 class UIListenerButtonUnitTest {
 	int count = 0;
 	JLabel label;
-	JTextArea area;
-	UIListener listener = new UIListener();
+	EditManager em = new EditManager();
+	GroupManager gm = new GroupManager();
+	int[] edits = new int[0];
+	JTextArea area = new JTextArea();
+	JList editList = new JList();
+	JList groupList = new JList();
+	JList groupContentList = new JList();
+	
+	UIListener listener = new UIListener(em, gm, edits, area, editList, groupList, groupContentList);
 	
 	
 	public UIListenerButtonUnitTest() {
