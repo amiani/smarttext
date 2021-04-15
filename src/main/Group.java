@@ -24,4 +24,8 @@ public class Group {
 
         return;
     }
+
+    public LinkedList<Edit> getEdits(){
+        return edits;
+    }
 }
