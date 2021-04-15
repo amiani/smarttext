@@ -43,17 +43,13 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	
 	private static JTextArea area;
 	private static JFrame frame;
-	private static int returnValue = 0;
+	
 	
 	private EditManager em;
 	private GroupManager gm;
 	private EditListener editlisten;
 	private UIListener listener;
-	private int[] selectededits;
-	//Default group + active group are only really here for testing. Will be replaced by edit groups on implementation
-	private static LinkedList<String> defaultgroup;
-	private static LinkedList<String> activegroup;
-	
+
 	
 	
 	public UserInterface() { }
