@@ -16,12 +16,13 @@ Features:
 
 ## Set Up Instructions
 Git pull from : https://github.com/amiani/smarttext.git
-
-Run the available .jar file or open in a compiler.
-
-Requires Java.
-
 All files found under smarttext/src/main.
+Requires java, but no other dependencies.
+
+Driver.java contains the main run.
+
+Shift or Ctrl Click to select multiple edits.
+
 
 ## Information
 This was developed for COMP354 at Concordia University in the Winter 2021 session.
