@@ -248,7 +248,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		listener.setEdits(editlist.getSelectedIndices());
-		area.setText(em.getText());
+		//area.setText(em.getText());
 	}
 
 	//Functionality for popup windows via creategroup/managegroup
