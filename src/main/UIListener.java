@@ -2,10 +2,19 @@ package main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import javax.swing.AbstractAction;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.JTextArea;
 
 public class UIListener {
@@ -18,26 +27,25 @@ public class UIListener {
 	private static JTextArea area;
 	private static JList editlist;
 	private static JList grouplist;
-	
+
 	private static JList groupcontentlist;
-	
+
 	public UIListener(EditManager e,GroupManager g, int[] edits, JTextArea area, JList editlist, JList grouplist, JList groupcontentlist) {
 		em = e;
 		gm = g;
 		this.edits = edits;
 		addedits = new int[] {};
 		removededits = new int[] {};
-		
+
 		this.area = area;
 		this.editlist = editlist;
 		this.grouplist = grouplist;
 		//this.defaulteditlist = defaulteditlist;
 		this.groupcontentlist = groupcontentlist;
-		
+
 	}
 
-	// ERROR HANLING METHODS
-	
+	// ERROR HANDLING METHODS
 	/**
 	 * Checks array to ensure there are no negative values in the provided array
 	 * 
@@ -45,7 +53,7 @@ public class UIListener {
 	 * @return
 	 */
 
-	private boolean checkNegativeArr(int[] array) {
+	protected boolean checkNegativeArr(int[] array) {
 		if (array != null) {
 			for (int i = 0; i < array.length; i++) {
 				if (array[i] < 0)
@@ -54,8 +62,8 @@ public class UIListener {
 		}
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Checks value to ensure it is not negative. Implemented solely to make code
 	 * more understandable as oppose to having if(value < 1) everywhere.
@@ -64,20 +72,20 @@ public class UIListener {
 	 * @return
 	 */
 
-	private boolean checkNegativeVal(int value) {
+	protected boolean checkNegativeVal(int value) {
 		return value < 0 ? false : true;
 	}
 
 	public void setEdits(int[] e) {
-		
+
 		edits = e;
-		
+
 	}
-	
+
 	public void setAddEdits(int[] e) {
 		addedits = e;
 	}
-	
+
 	public void setRemovedEdits(int[] e) {
 		removededits = e;
 	}
@@ -89,27 +97,26 @@ public class UIListener {
 	 * -----------------------------------------------------------------------------
 	 */
 
-	
 	/**
 	 * The Listener associated with the undo method in the EditManager
 	 * 
 	 * @author Brandon
 	 */
-	
+
 	public class HandleUndoAction implements ActionListener {
 
-		
+
 		HandleUndoAction(int[] e) {
 			edits = e;
 		}
-		
+
 	//Added array length clause so edits must be selected for undo
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (checkNegativeArr(UIListener.this.edits) && UIListener.this.edits.length != 0) {
 
 				System.out.println("Undo Handled ");
-		
+
 				//setting Listener.active to false to prevent the EditListener from firing on the undo action
 				Listener.setActive(false);
 				//perform undo and update JTextArea
@@ -118,13 +125,13 @@ public class UIListener {
 				area.replaceRange(em.getText(), 0, area.getText().length());
 				//set Listener.active to true so the EditListener will accept edits again
 				Listener.setActive(true);
-				
+
 
 			} else {
 				System.out.println("No edit selected");
 			}
 
-			
+
 		}
 	}
 
@@ -154,7 +161,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the deleteEdits method in the EditManager
 	 * 
@@ -162,7 +168,7 @@ public class UIListener {
 	 */
 
 	public class HandleDeleteEditsAction implements ActionListener {
-	
+
 
 		HandleDeleteEditsAction(int[] e) {
 			edits = e;
@@ -184,7 +190,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the getEdits method in the EditManager
 	 * 
@@ -197,7 +202,7 @@ public class UIListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			System.out.println("Get Edits Handled");
 			edits = em.edits();
 		}
@@ -208,7 +213,6 @@ public class UIListener {
 
 	}
 
-	
 	/**
 	 * The Listener associated with the CreateGroup method in the GroupManager
 	 * 
@@ -219,14 +223,13 @@ public class UIListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			System.out.println("Create Group Handled");
 			gm.createGroup();
 			grouplist.setListData(gm.getGroups().toArray());
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the deleteGroup method in the GroupManager
 	 * 
@@ -235,10 +238,10 @@ public class UIListener {
 
 	public class HandleDeleteGroupAction extends AbstractAction {
 
-		
+
 
 		public HandleDeleteGroupAction(int groupId) {
-			
+
 		}
 
 		@Override
@@ -249,7 +252,7 @@ public class UIListener {
 				gm.deleteGroup(grouplist.getSelectedIndex());
 
 				Listener.setActiveList(Listener.getDefaultList());
-				
+
 				grouplist.setListData(gm.getGroups().toArray());
 				grouplist.setSelectedIndex(0);
 
@@ -259,7 +262,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the addEdits method in the GroupManager
 	 * 
@@ -283,7 +285,7 @@ public class UIListener {
 				LinkedList<Edit> eds = em.edits(UIListener.this.addedits);
 				Listener.setActiveList(eds);
 				gm.addEdits(groupId, UIListener.this.addedits);
-				
+
 				int[] editIds = gm.getEditList(grouplist.getSelectedIndex()).stream()
 						.mapToInt(Integer::intValue).toArray();
 				Listener.setActiveList(em.edits(editIds));
@@ -297,7 +299,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the removeEdits method in the GroupManager
 	 * 
@@ -306,7 +307,7 @@ public class UIListener {
 
 	public class HandleRemoveEditAction implements ActionListener {
 
-		
+
 		int groupId;
 
 		public HandleRemoveEditAction(int groupId, int[] edits) {
@@ -322,15 +323,15 @@ public class UIListener {
 				LinkedList<Edit> eds = em.edits(UIListener.this.removededits);
 				Listener.setActiveList(eds);
 				gm.removeEdits(groupId, UIListener.this.removededits);
-				
+
 				int[] editIds = gm.getEditList(grouplist.getSelectedIndex()).stream()
 						.mapToInt(Integer::intValue).toArray();
 				Listener.setActiveList(em.edits(editIds));
-				
-				
+
+
 				editlist.setListData(Listener.getActiveList().toArray());
 				groupcontentlist.setListData(Listener.getActiveList().toArray());
-				
+
 
 			} else {
 
@@ -338,7 +339,6 @@ public class UIListener {
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the load method in the FileIO FileIO not yet
 	 * implemented
@@ -347,20 +347,43 @@ public class UIListener {
 	 */
 
 	public class HandleLoadAction extends AbstractAction {
+		int returnValue = 0;
+		String ingest;
+		JTextArea area;
 
 		String filename;
 
-		public HandleLoadAction(String filename) {
-			this.filename = filename;
+		public HandleLoadAction(JTextArea area) {
+			this.area = area;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//				handleLoad(filename);
+			JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			jfc.setDialogTitle("Choose destination.");
+			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+			returnValue = jfc.showOpenDialog(null);
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File f = new File(jfc.getSelectedFile().getAbsolutePath());
+				try {
+					FileReader read = new FileReader(f);
+					Scanner scan = new Scanner(read);
+					while (scan.hasNextLine()) {
+						String line = scan.nextLine() + "\n";
+						if(ingest == null) {
+							ingest = line;
+						}
+						else ingest = ingest + line;
+					}
+					area.setText(ingest);
+				} catch (FileNotFoundException ex) {
+					ex.printStackTrace();
+				}
+			}
 		}
 	}
 
-	
 	/**
 	 * The Listener associated with the save method in the FileIO FileIO not yet
 	 * implemented
@@ -368,12 +391,65 @@ public class UIListener {
 	 * @author Brandon
 	 */
 
-	public class HandleSaveAction extends AbstractAction {
+	public class HandleSaveAction implements ActionListener {
+
+		int returnValue;
+		JTextArea area;
+
+		public HandleSaveAction(JTextArea area) {
+			this.area = area;
+		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		
+			JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			jfc.setDialogTitle("Choose destination.");
+			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+			returnValue = jfc.showSaveDialog(null);
+			try {
+				File f = new File(jfc.getSelectedFile().getAbsolutePath());
+				FileWriter out = new FileWriter(f);
+				out.write(area.getText());
+				out.close();
+			} catch (FileNotFoundException ex) {
+				Component f = null;
+				JOptionPane.showMessageDialog(f, "File not found.");
+			} catch (IOException ex) {
+				Component f = null;
+				JOptionPane.showMessageDialog(f, "Error.");
+			} catch (NullPointerException ex) {
+			}
 		}
 	}
-	
+
+
+
+	public class HandleNewAction implements ActionListener {
+
+		JTextArea area;
+
+		public HandleNewAction(JTextArea area) {
+			this.area = area;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("New Handled");
+			area.setText("");
+		}
+	}
+
+
+
+	public class HandleQuitAction implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Quit Handled");
+			System.exit(0);
+		}
+
+	}
+
 }
