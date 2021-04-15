@@ -1,13 +1,16 @@
 package main;
 
+import javax.swing.JList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 public class EditListener implements DocumentListener {
     EditManager editManager;
-    public EditListener(EditManager em) {
+    JList editlist;
+    public EditListener(EditManager em, JList editlist) {
         this.editManager = em;
+        this.editlist  = editlist;
     }
 
     private EditType lastEdit;
@@ -19,6 +22,7 @@ public class EditListener implements DocumentListener {
             String text = doc.getText(position, e.getLength());
             editManager.insert(position, text);
             //System.out.println(position + ": " + text);
+            editlist.setListData(editManager.getEdits().toArray());
         } catch (BadLocationException badLocationException) {
             badLocationException.printStackTrace();
         }

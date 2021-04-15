@@ -69,9 +69,11 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	    }
 	    area = new JTextArea();
 		em = new EditManager();
-		editlisten = new EditListener(em);
-	    listener = new UIListener(em, new int[] {}, area);
+		
+		editlist= new JList(em.getEdits().toArray());
 	    
+		listener = new UIListener(em, new int[] {}, area);
+	    editlisten = new EditListener(em, editlist);
 	    
 	    
 	    //Creation of the text field
@@ -97,7 +99,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		
 		
 		
-		editlist= new JList(em.getEdits().toArray());
+		
 		editlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		editscroll = new JScrollPane();
 		
@@ -212,6 +214,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
    
 	while(true) {
 		listener.setEdits(editlist.getSelectedIndices());
+		
 	}
 
 	}
@@ -303,7 +306,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	//Document listeners to update the editlist
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		editlist.setListData(em.getEdits().toArray());
+		//editlist.setListData(em.getEdits().toArray());
 		
 	}
 
