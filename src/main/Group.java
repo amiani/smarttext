@@ -13,15 +13,34 @@ public class Group {
         this.id = id;
         edits = new LinkedList<Edit>();
     }
+    
+    //New constructor to create group with data
+    public Group(int id, LinkedList<Edit> edits) {
+    	this.id = id;
+    	this.edits = edits;
+    }
+    
+    public LinkedList<Edit> getEdits(){
+    	return edits;
+    }
+    
     public int getId(){
         return id;
     }
     public void addEdits(int[] editIds){
-
+    	//Listener.getActiveList().add
         return;
     }
     public void removeEdits(int[] editIds){
 
         return;
+    }
+    public String toString() {
+    	if(id == 0) {
+    		return "Default Group";
+    	}
+    	else {
+    	return "Group #" + id;
+    	}
     }
 }

@@ -17,6 +17,7 @@ public class EditManager {
         Edit newEdit = new Edit(INSERT, new int[]{piece.id()});
         edits.add(newEdit);
         pieces = insertPiece(pieces, position, piece);
+        
     }
 
     public void delete(int position, int deleteLength) {
@@ -197,7 +198,12 @@ public class EditManager {
     protected LinkedList<Piece> replacePieces(List<Piece> pieces, int index, ArrayList<Piece> splits) {
         return replacePieces(pieces, new int[]{index}, new ArrayList<>(Collections.singleton(splits)));
     }
+    
+
+    
 }
+
+
 
 class FindResult {
     public final Piece piece;

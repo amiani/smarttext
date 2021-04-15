@@ -12,15 +12,14 @@ public class Edit {
         this.type = type;
         this.pieces = pieceIds;
     }
-
+   
+    public String toString() {
+        return "Edit #".concat(String.valueOf(id));
+    }
     public int id(){
         return id;
     }
     public int[] pieces() { return pieces;}
-
-    public String toString() {
-        return "Edit #".concat(String.valueOf(id));
-    }
 }
 
 enum EditType {
