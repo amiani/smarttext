@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,10 +11,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import javax.swing.AbstractAction;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JTextArea;
 
