@@ -44,6 +44,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	private static JTextArea area;
 	private static JFrame frame;
 	private static int returnValue = 0;
+	
 	private EditManager em;
 	private EditListener editlisten;
 	private UIListener listener;
@@ -92,14 +93,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		
 		JLabel groupLabel = new JLabel("Edit Group:");
 		JLabel editLabel = new JLabel("Edits:");
-		
-		
-		
-		
-		
-		
-		
-		
+	
 		editlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		editscroll = new JScrollPane();
 		
@@ -167,17 +161,11 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		editoptions.add(managebutton);
 		editoptions.add(deletegroup);
 		editoptions.add(dumb);
-		
-		
-		
-		
+	
 		//Need to add editoptions below the JList components
 		editarea.add(editoptions, BorderLayout.SOUTH);
 	
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		
 		
 		frame.add(textscroll);
 		frame.add(editarea, BorderLayout.WEST);
