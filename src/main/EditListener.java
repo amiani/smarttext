@@ -21,31 +21,23 @@ public class EditListener implements DocumentListener {
     public void insertUpdate(DocumentEvent e) {
         Document doc = e.getDocument();
         try {
-        	
-        	if(Listener.getActive()) {
-            int position = e.getOffset();
-            String text = doc.getText(position, e.getLength());
-            
-            System.out.println(editManager.getText());
-           
-           
-             
-            	System.out.println("Adding Edit: "+ text);
+        	if (Listener.getActive()) {
+                int position = e.getOffset();
+                String text = doc.getText(position, e.getLength());
+                System.out.println(editManager.getText());
             	editManager.insert(position, text);
-         
-            //System.out.println(position + ": " + text);
+                //System.out.println(position + ": " + text);
             	editlist.setListData(Listener.getDefaultList().toArray());
         	}
-            
         } catch (BadLocationException badLocationException) {
             badLocationException.printStackTrace();
         }
     }
 
     public void removeUpdate(DocumentEvent e) {
-    	if(Listener.getActive()) {
-    	Document doc = e.getDocument();
-       editManager.delete(e.getOffset(), e.getLength());
+    	if (Listener.getActive()) {
+            Document doc = e.getDocument();
+            editManager.delete(e.getOffset(), e.getLength());
     	}
     }
 
