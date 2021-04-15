@@ -14,6 +14,14 @@ Features:
 - Can delete the record of the edit from SmartUndo so it cannot be undone via SmartUndo
 - Can delete groups and/or all the edits in that group
 
+## Set Up Instructions
+Git pull from : https://github.com/amiani/smarttext.git
+
+Run the available .jar file or open in a compiler.
+
+Requires Java.
+
+All files found under smarttext/src/main.
 
 ## Information
 This was developed for COMP354 at Concordia University in the Winter 2021 session.
