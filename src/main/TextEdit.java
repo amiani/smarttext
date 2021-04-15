@@ -99,7 +99,8 @@ public final class TextEdit extends JFrame implements ActionListener {
               while(scan.hasNextLine()){
                   String line = scan.nextLine() + "\n";
                   ingest = ingest + line;
-          }
+              }
+              scan.close();
               area.setText(ingest);
           }
       catch ( FileNotFoundException ex) { ex.printStackTrace(); }

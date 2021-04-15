@@ -6,16 +6,38 @@ import java.util.LinkedList;
 
 public class GroupManager implements createDeleteGroup, modifyGroup{
     private LinkedList<Group> groups;
+    private int lastElementID = 0;
+    
     public GroupManager(){
         groups = new LinkedList<Group>();
+        createGroup(); // default list
+    }
+    
+    public LinkedList<Group> getGroups(){
+        return groups;
+    }
+    
+    public Group getGroup(String groupName){
+    	for(int i=0;i<groups.size();i++)
+            if(groups.get(i).toString() == groupName)
+                return groups.get(i);
+        return groups.get(0);
     }
 
     public int createGroup(){
-        //find id of the last element and add +1 to the value to get new id
-        int lastElementId = groups.getLast().getId();
-        Group newGroup = new Group(lastElementId+1);
+        Group newGroup = new Group(lastElementID++);
         groups.add(newGroup);
-        return lastElementId+1;
+        return lastElementID;
+    }
+ 
+    public int createGroup(String name){
+        Group newGroup = new Group(lastElementID++, name);
+        groups.add(newGroup);
+        return lastElementID;
+    }
+    
+    public Group getDefaultGroup() {
+    	return groups.get(0);
     }
 
     public void deleteGroup(int groupId){
@@ -26,7 +48,6 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
                 return;
             }
         }
-        return;
     }
     public void addEdits(int groupId, int[] editIds){
         //iterate to find group with matching group id, and then add edits to it
@@ -36,7 +57,8 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
                 return;
             }
         }
-        return;
+        if (groupId != 0)
+        	groups.get(0).addEdits(editIds);
     }
 
     public void removeEdits(int groupId, int[] editIds){
@@ -47,6 +69,5 @@ public class GroupManager implements createDeleteGroup, modifyGroup{
                 return;
             }
         }
-        return;
     }
 }

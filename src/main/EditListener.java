@@ -4,14 +4,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
 public class EditListener implements DocumentListener {
     EditManager editManager;
     public EditListener(EditManager em) {
         this.editManager = em;
     }
 
-    private EditType lastEdit;
+//    private EditType lastEdit;
 
     public void insertUpdate(DocumentEvent e) {
         Document doc = e.getDocument();
@@ -26,6 +25,7 @@ public class EditListener implements DocumentListener {
     }
 
     public void removeUpdate(DocumentEvent e) {
+ //       Document doc = e.getDocument();
         editManager.delete(e.getOffset(), e.getLength());
     }
 
