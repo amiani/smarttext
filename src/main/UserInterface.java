@@ -179,6 +179,8 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 			
 			menuitem_save.addActionListener(listener.new HandleSaveAction(area));
 			menuitem_open.addActionListener(listener.new HandleLoadAction(area));
+			menuitem_new.addActionListener(listener.new HandleNewAction(area));
+			menuitem_quit.addActionListener(listener.new HandleQuitAction());
 
 			/*
 			menuitem_new.addActionListener(this);
@@ -188,9 +190,8 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		*/
 
 
-			 menu_main.add(menu_file);
-
-		        menu_file.add(menuitem_new);
+			menu_main.add(menu_file);
+		    menu_file.add(menuitem_new);
 		    menu_file.add(menuitem_open);
 		    menu_file.add(menuitem_save);
 		    menu_file.add(menuitem_quit);
