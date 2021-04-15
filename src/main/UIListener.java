@@ -36,7 +36,7 @@ public class UIListener {
 	 * @return
 	 */
 
-	private boolean checkNegativeArr(int[] array) {
+	public boolean checkNegativeArr(int[] array) {
 		if (array != null) {
 			for (int i = 0; i < array.length; i++) {
 				if (array[i] < 0)
@@ -299,7 +299,6 @@ public class UIListener {
 					Scanner scan = new Scanner(read);
 					while (scan.hasNextLine()) {
 						String line = scan.nextLine() + "\n";
-						System.out.println(line);
 						if(ingest == null) {
 							ingest = line;
 						}
@@ -350,6 +349,33 @@ public class UIListener {
 			} catch (NullPointerException ex) {
 			}
 		}
+	}
+	
+	
+	
+	public class HandleNewAction implements ActionListener {
+
+		JTextArea area;
+		
+		public HandleNewAction(JTextArea area) {
+			this.area = area;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			area.setText("");
+		}	
+	}
+	
+	
+	
+	public class HandleQuitAction implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+		}
+		
 	}
 
 }
