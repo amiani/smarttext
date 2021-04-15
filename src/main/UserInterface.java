@@ -1,12 +1,6 @@
 package main;
 
 
-
-/*TODO
- *	- add multiple groups to editlist so the grouplist will toggle between them
- *	- add linkedlist functionality---may be a UI listener issue?
- *
- */
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ListSelectionListener;
@@ -31,7 +25,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class UserInterface extends JFrame implements ActionListener, ListSelectionListener, DocumentListener{
+public final class UserInterface extends JFrame implements Runnable, ActionListener, ListSelectionListener, DocumentListener{
 	private static JPanel textarea;
 	private static JPanel editarea;
 	private static JPanel editoptions;
@@ -48,10 +42,10 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	private static JTextArea area;
 	private static JFrame frame;
 	private static int returnValue = 0;
-	private static EditManager em;
-	private static EditListener editlisten;
-	private static UIListener listener;
-	
+	private EditManager em;
+	private EditListener editlisten;
+	private UIListener listener;
+	private int[] selectededits;
 	//Default group + active group are only really here for testing. Will be replaced by edit groups on implementation
 	private static LinkedList<String> defaultgroup;
 	private static LinkedList<String> activegroup;
@@ -72,7 +66,7 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	    }
 		em = new EditManager();
 		editlisten = new EditListener(em);
-	    listener = new UIListener(em);
+	    listener = new UIListener(em, new int[] {});
 	    
 	    
 	    
@@ -94,13 +88,7 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		JLabel groupLabel = new JLabel("Edit Group:");
 		JLabel editLabel = new JLabel("Edits:");
 		
-		//Need to link UI to editmanager functionality. Testcases for now.
 		
-		//Only here to avoid crashing while testing*** Delete later
-		defaultgroup = new LinkedList<String>();
-		
-		
-		//Plan for defaultgroup to hold all edits
 		
 		
 		
@@ -121,8 +109,8 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		editscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		groupscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	
-		grouplist.addListSelectionListener(this);
-		
+		//grouplist.addListSelectionListener(this);
+		editlist.addListSelectionListener(this);
 		
 		
 		JPanel listarea = new JPanel();
@@ -134,9 +122,14 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		
 		editarea.add(listarea);
 		
+		
+		
 		editoptions = new JPanel(new GridLayout(0,2));
 		editoptions.setBorder(new TitledBorder ( new EtchedBorder(), "Edit Options"));
 		undobutton = new JButton("Undo");
+		
+		
+		
 		undobutton.addActionListener(listener.new HandleUndoAction(editlist.getSelectedIndices()));
 		undobutton.addActionListener(this);
 		
@@ -144,6 +137,7 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 		groupbutton = new JButton("Create Group");
 		groupbutton.addActionListener(listener.new HandleCreateGroupAction());
 		groupbutton.addActionListener(this);
+		
 		
 		delbutton = new JButton("Delete Edit");
 		delbutton.addActionListener(listener.new HandleDeleteEditsAction(editlist.getSelectedIndices()));
@@ -253,22 +247,18 @@ public final class UserInterface extends JFrame implements ActionListener, ListS
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		
+		listener.setEdits(editlist.getSelectedIndices());
+		area.setText(em.getText());
 	}
 
 	//Functionality for popup windows via creategroup/managegroup
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//update editlist
-		editlist.setListData(em.getEdits().toArray());
+		
+		//area.setText(em.getText());
 		String ae = e.getActionCommand();
-		if(ae.equals("Create Group")) {
-			String groupname = JOptionPane.showInputDialog("Please enter a name for the group");
-			//Need to figure out how groups are represented by Jlist
-			//Group class might need toString to be displayed
-			//testgroups.add(groupname);
-			//grouplist.setListData(testgroups.toArray());
-		}
+
 		if(ae.equals("Manage Group")) {
 			if(grouplist.getSelectedValue() != null) {
 				String group = grouplist.getSelectedValue().toString();

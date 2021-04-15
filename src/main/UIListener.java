@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
@@ -19,10 +20,12 @@ public class UIListener {
 
 	EditManager em;
 	GroupManager gm;
+	private int[] edits;
 
-	public UIListener(EditManager e) {
+	public UIListener(EditManager e, int[] edits) {
 		em = e;
 		gm = new GroupManager();
+		this.edits = edits;
 	}
 
 	// ERROR HANLING METHODS
@@ -56,6 +59,14 @@ public class UIListener {
 		return value < 0 ? false : true;
 	}
 
+	public void setEdits(int[] e) {
+		System.out.println(e.length);
+		
+			System.out.println(Arrays.toString(e));
+		
+		edits = e;
+		System.out.println(edits.length);
+	}
 
 
 	/**
@@ -73,19 +84,21 @@ public class UIListener {
 
 	public class HandleUndoAction implements ActionListener {
 
-		int[] edits;
-		int[] ids;
-
-		HandleUndoAction(int[] edits) {
-			this.edits = edits;
+		
+		HandleUndoAction(int[] e) {
+			edits = e;
 		}
-
+		
+	
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (checkNegativeArr(edits)) {
+			if (checkNegativeArr(UIListener.this.edits)) {
 
 				System.out.println("Undo Handled ");
-				em.undo(ids);
+		
+				System.out.println(Arrays.toString(UIListener.this.edits));
+				
+				em.undo(UIListener.this.edits);
 
 			} else {
 
