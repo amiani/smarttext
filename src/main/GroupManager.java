@@ -1,10 +1,8 @@
 package main;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.util.LinkedList;
 
-public class GroupManager implements DocumentListener, createDeleteGroup, modifyGroup{
+public class GroupManager implements createDeleteGroup, modifyGroup{
     private LinkedList<Group> groups;
     public GroupManager(){
         groups = new LinkedList<Group>();
@@ -50,13 +48,4 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
         }
         return;
     }
-    public void insertUpdate(DocumentEvent e) {
-
-    }
-
-    public void removeUpdate(DocumentEvent e) {
-
-    }
-
-    public void changedUpdate(DocumentEvent e) {}
 }
