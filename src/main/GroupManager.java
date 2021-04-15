@@ -1,13 +1,9 @@
 package main;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-public class GroupManager implements DocumentListener, createDeleteGroup, modifyGroup{
+public class GroupManager implements createDeleteGroup, modifyGroup{
     private LinkedList<Group> groups;
     public GroupManager(){
         groups = new LinkedList<Group>();
