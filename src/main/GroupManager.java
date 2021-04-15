@@ -12,17 +12,17 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     public GroupManager(){
         groups = new LinkedList<Group>();
     }
-    
+
     public LinkedList<Group> getGroups(){
     	return groups;
     }
-    
+
     public LinkedList<Integer> getEditList(int groupindex){
     	  for(int i=0;i<groups.size();i++){
               if(groups.get(i).id() == groupindex){
                  return groups.get(i).edits();
               }
-              
+
     	  }
     	  System.out.println("Error group not found. returning null");
     	  return null;
@@ -43,12 +43,19 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
     	}
     }
 
+    public Group findFromIndex(int findIndex){
+        if(groups.size() >= findIndex){
+            return groups.get(findIndex);
+        }
+        return null;
+    }
+
     public void deleteGroup(int groupId){
         //iterate to find group with matching group id, and then delete id
         for(int i=0;i<groups.size();i++){
             if(groups.get(i).id() == groupId){
                 groups.remove(i);
-                
+
                 updateIds();
                 return;
             }
@@ -56,17 +63,20 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
         return;
     }
     public void addEdits(int groupId, int[] editIds){
+        if (groupId < 0) {
+            return;
+        }
         //iterate to find group with matching group id, and then add edits to it
         for (int i = 0; i < groups.size(); i++) {
             if (groups.get(i).id() == groupId){
-            
+
             	groups.get(i).addEdits(editIds);
                 return;
             }
         }
         return;
     }
-    
+
     public void updateIds() {
     	for(int i=0;i<groups.size();i++) {
     		groups.get(i).setId(i);
@@ -83,13 +93,4 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
         }
         return;
     }
-    public void insertUpdate(DocumentEvent e) {
-
-    }
-
-    public void removeUpdate(DocumentEvent e) {
-
-    }
-
-    public void changedUpdate(DocumentEvent e) {}
 }
