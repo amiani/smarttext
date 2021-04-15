@@ -16,8 +16,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-public final class UserInterface extends JFrame implements Runnable, ActionListener, ListSelectionListener, DocumentListener{
+/**
+ * UserInterface
+ * Threaded class which runs the SmartText ui
+ * instantiates listeners and managers for program function
+ *
+ */
+public final class UserInterface extends JFrame implements Runnable, ActionListener, ListSelectionListener{
 	private Thread t;
 	
 	private static JPanel textarea;
@@ -53,6 +58,14 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	
 	public UserInterface() { }
 	
+	
+	//Methods to update list selections
+	//Necessary for UIListener functionality
+	private void updateListener() {
+		listener.setEdits(editlist.getSelectedIndices());
+		listener.setAddEdits(defaulteditlist.getSelectedIndices());
+		listener.setRemovedEdits(groupcontentlist.getSelectedIndices());
+	}
 
 	public void run() {
 		
@@ -84,7 +97,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		defaulteditlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	    
 	    
-		listener = new UIListener(em, gm, new int[] {}, area, editlist, grouplist, defaulteditlist, groupcontentlist);
+		listener = new UIListener(em, gm, new int[] {}, area, editlist, grouplist, groupcontentlist);
 	    editlisten = new EditListener(em, gm, editlist);
 	    
 	    
@@ -92,7 +105,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	    textarea = new JPanel(new BorderLayout());
 	    textarea.setBorder(new TitledBorder ( new EtchedBorder(), "Text Area"));
 		area.getDocument().addDocumentListener(editlisten);
-		area.getDocument().addDocumentListener(this);
+	//area.getDocument().addDocumentListener(this);
 		JScrollPane textscroll = new JScrollPane();
 		textscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		textscroll.setViewportView(area);
@@ -102,66 +115,40 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		editarea = new JPanel(new BorderLayout());
 		editarea.setBorder(new TitledBorder ( new EtchedBorder(), "Edit Area"));
 		
+		//Creation of list area for edits/groups
 		JLabel groupLabel = new JLabel("Edit Group:");
 		JLabel editLabel = new JLabel("Edits:");
-	
 		editlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		editscroll = new JScrollPane();
-		
-		//Need to add 
-		
-		String testgroups[] = {"Default Group"};
-		
 		JScrollPane groupscroll = new JScrollPane();
 		editscroll.setViewportView(editlist);
 		groupscroll.setViewportView(grouplist);
 		editscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		groupscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	
 		grouplist.addListSelectionListener(this);
-		//editlist.addListSelectionListener(this);
-		
-		
 		JPanel listarea = new JPanel();
-		
 		listarea.add(groupLabel, BorderLayout.CENTER);
 		listarea.add(groupscroll, BorderLayout.CENTER);
 		listarea.add(editLabel, BorderLayout.CENTER);
 		listarea.add(editscroll, BorderLayout.CENTER);
 		
+		
 		editarea.add(listarea);
 		
 		
-		
+		//Creation of buttons and attaching actionlisteners
 		editoptions = new JPanel(new GridLayout(0,2));
 		editoptions.setBorder(new TitledBorder ( new EtchedBorder(), "Edit Options"));
 		undobutton = new JButton("Undo");
-		
-		
-		
 		undobutton.addActionListener(listener.new HandleUndoAction(editlist.getSelectedIndices()));
-		
-		
-		
 		groupbutton = new JButton("Create Group");
 		groupbutton.addActionListener(listener.new HandleCreateGroupAction());
-		
-		
-		
 		delbutton = new JButton("Delete Edit");
 		delbutton.addActionListener(listener.new HandleDeleteEditsAction(editlist.getSelectedIndices()));
-		
-		
-		
 		managebutton = new JButton("Manage Group");
-		
-		
 		deletegroup = new JButton("Delete Group");
 		deletegroup.addActionListener(listener.new HandleDeleteGroupAction(grouplist.getSelectedIndex()));
-		
-		
 		managebutton.addActionListener(this);
-		
 		editoptions.add(undobutton);
 		editoptions.add(delbutton);
 		editoptions.add(groupbutton);
@@ -171,6 +158,9 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	
 		//Need to add editoptions below the JList components
 		editarea.add(editoptions, BorderLayout.SOUTH);
+		
+		JLabel instr = new JLabel("Shift or Ctrl Click to select multiple edits");
+		editarea.add(instr, BorderLayout.NORTH);
 	
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -191,12 +181,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 			JMenuItem menuitem_save = new JMenuItem ("Save");
 			JMenuItem menuitem_quit = new JMenuItem ("Quit");
 			
-			/*
-			menuitem_new.addActionListener(this);
-			menuitem_open.addActionListener(this);
-			menuitem_save.addActionListener(this);
-			menuitem_quit.addActionListener(this);
-		*/
+	
 			 menu_main.add(menu_file);
 
 		        menu_file.add(menuitem_new);
@@ -208,15 +193,18 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		    frame.setJMenuBar(menu_main);
 		   
 	while(true) {
-		listener.setEdits(editlist.getSelectedIndices());
+		//Polls JList objects
+		updateListener();
 		
 	}
 
 	}
 	
+
 	//Popup window to edit groups
 	//Displays all edits on the left and the selected group on the right
 	public void manageGroup(String groupname) {
+		if(grouplist.getSelectedIndex() != 0) {
 		JFrame managerwindow = new JFrame();
 		
 		JPanel manageoptions = new JPanel(new GridLayout(0, 2));
@@ -253,6 +241,10 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		managerwindow.add(manageoptions);
 		managerwindow.pack();
 		managerwindow.setVisible(true);
+		}
+		else {
+			System.out.println("Cannot manage default group");
+		}
 		
 	}
 	
@@ -266,16 +258,20 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if(grouplist.getSelectedIndex() == 0) {
+		if(grouplist.getSelectedIndex() == 0 || grouplist.getSelectedIndex() == -1) {
 			Listener.setActiveList(Listener.getDefaultList());
 			editlist.setListData(Listener.getActiveList().toArray());
 		}
 		else {
+			try {
 			int[] editIds = gm.getEditList(grouplist.getSelectedIndex()).stream()
 					.mapToInt(Integer::intValue).toArray();
 			Listener.setActiveList(em.edits(editIds));
 			if(Listener.getActiveList() != null) {
 				editlist.setListData(Listener.getActiveList().toArray());
+			}
+			}catch(NullPointerException y) {
+				
 			}
 		}
 	}
@@ -296,22 +292,4 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	}
 	
 
-	//Document listeners to update the editlist
-	@Override
-	public void insertUpdate(DocumentEvent e) {
-		//editlist.setListData(em.getEdits().toArray());
-		
-	}
-
-	@Override
-	public void removeUpdate(DocumentEvent e) {
-		//editlist.setListData(em.getEdits().toArray());
-		
-	}
-
-	@Override
-	public void changedUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -1,7 +1,11 @@
 package main;
 
 import java.util.LinkedList;
-
+/**
+ * Listener Abstract Class
+ * Provides static members and functions to facilitate program action
+ * 
+*/
 public abstract class Listener {
 	private static boolean active = true;
 	private static LinkedList<Edit> defaultlist = null;

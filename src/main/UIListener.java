@@ -14,22 +14,24 @@ public class UIListener {
 	GroupManager gm;
 	private int[] edits;
 	private int[] addedits;
+	private int[] removededits;
 	private static JTextArea area;
 	private static JList editlist;
 	private static JList grouplist;
-	private static JList defaulteditlist;
+	
 	private static JList groupcontentlist;
 	
-	public UIListener(EditManager e,GroupManager g, int[] edits, JTextArea area, JList editlist, JList grouplist, JList defaulteditlist, JList groupcontentlist) {
+	public UIListener(EditManager e,GroupManager g, int[] edits, JTextArea area, JList editlist, JList grouplist, JList groupcontentlist) {
 		em = e;
 		gm = g;
 		this.edits = edits;
 		addedits = new int[] {};
+		removededits = new int[] {};
 		
 		this.area = area;
 		this.editlist = editlist;
 		this.grouplist = grouplist;
-		this.defaulteditlist = defaulteditlist;
+		//this.defaulteditlist = defaulteditlist;
 		this.groupcontentlist = groupcontentlist;
 		
 	}
@@ -74,6 +76,10 @@ public class UIListener {
 	
 	public void setAddEdits(int[] e) {
 		addedits = e;
+	}
+	
+	public void setRemovedEdits(int[] e) {
+		removededits = e;
 	}
 
 
@@ -168,6 +174,7 @@ public class UIListener {
 				
 				System.out.println("Delete Edits Handled");
 				em.deleteEdits(UIListener.this.edits);
+				
 				editlist.setListData(Listener.getActiveList().toArray());
 				
 			} else {
@@ -227,18 +234,23 @@ public class UIListener {
 
 	public class HandleDeleteGroupAction extends AbstractAction {
 
-		int groupId;
+		
 
 		public HandleDeleteGroupAction(int groupId) {
-			this.groupId = groupId;
+			
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (checkNegativeVal(groupId)) {
+			if (checkNegativeVal(grouplist.getSelectedIndex())) {
 
 				System.out.println("Delete Group Handled");
-				gm.deleteGroup(groupId);
+				gm.deleteGroup(grouplist.getSelectedIndex());
+				
+				Listener.setActiveList(Listener.getDefaultList());
+				
+				grouplist.setListData(gm.getGroups().toArray());
+				grouplist.setSelectedIndex(0);
 
 			} else {
 
@@ -270,10 +282,12 @@ public class UIListener {
 				LinkedList<Edit> eds = em.edits(UIListener.this.addedits);
 				Listener.setActiveList(eds);
 				gm.addEdits(groupId, UIListener.this.addedits);
-				System.out.println(groupId);
-				System.out.println(UIListener.this.addedits);
-				System.out.println(defaulteditlist.getSelectedIndices().toString());
-				System.out.println(Listener.getActiveList().toString());
+				
+				int[] editIds = gm.getEditList(grouplist.getSelectedIndex()).stream()
+						.mapToInt(Integer::intValue).toArray();
+				Listener.setActiveList(em.edits(editIds));
+
+				editlist.setListData(Listener.getActiveList().toArray());
 				groupcontentlist.setListData(Listener.getActiveList().toArray());
 
 			} else {
@@ -291,20 +305,31 @@ public class UIListener {
 
 	public class HandleRemoveEditAction implements ActionListener {
 
-		int[] edits;
+		
 		int groupId;
 
 		public HandleRemoveEditAction(int groupId, int[] edits) {
 			this.groupId = groupId;
-			this.edits = edits;
+			removededits = edits;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (checkNegativeArr(edits) && checkNegativeVal(groupId)) {
+			if (checkNegativeArr(UIListener.this.removededits) && checkNegativeVal(groupId)) {
 
 				System.out.println("Remove Edit Handled");
-				gm.removeEdits(groupId, edits);
+				LinkedList<Edit> eds = em.edits(UIListener.this.removededits);
+				Listener.setActiveList(eds);
+				gm.removeEdits(groupId, UIListener.this.removededits);
+				
+				int[] editIds = gm.getEditList(grouplist.getSelectedIndex()).stream()
+						.mapToInt(Integer::intValue).toArray();
+				Listener.setActiveList(em.edits(editIds));
+				
+				
+				editlist.setListData(Listener.getActiveList().toArray());
+				groupcontentlist.setListData(Listener.getActiveList().toArray());
+				
 
 			} else {
 

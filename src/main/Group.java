@@ -21,6 +21,9 @@ public class Group {
         }
     }
     
+    public void setId(int id) {
+    	this.id = id;
+    }
     public LinkedList<Integer> edits() {
     	return editIds;
     }

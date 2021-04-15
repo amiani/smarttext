@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
@@ -46,6 +48,8 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
         for(int i=0;i<groups.size();i++){
             if(groups.get(i).id() == groupId){
                 groups.remove(i);
+                
+                updateIds();
                 return;
             }
         }
@@ -55,12 +59,18 @@ public class GroupManager implements DocumentListener, createDeleteGroup, modify
         //iterate to find group with matching group id, and then add edits to it
         for (int i = 0; i < groups.size(); i++) {
             if (groups.get(i).id() == groupId){
-            	System.out.println("Trying to add to group");
+            
             	groups.get(i).addEdits(editIds);
                 return;
             }
         }
         return;
+    }
+    
+    public void updateIds() {
+    	for(int i=0;i<groups.size();i++) {
+    		groups.get(i).setId(i);
+    	}
     }
 
     public void removeEdits(int groupId, int[] editIds){
