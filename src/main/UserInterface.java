@@ -60,7 +60,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 
 	public void run() {
 		frame = new JFrame("SmartText");
-		frame.setPreferredSize(new Dimension(800, 800));
+		frame.setPreferredSize(new Dimension(800, 700));
 
 	    // Set the look-and-feel (LNF) of the application
 	        // Try to default to whatever the host system prefers
@@ -87,7 +87,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		defaulteditlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	    
 
-		listener = new UIListener(em, gm, new int[] {}, area, editlist, grouplist, groupcontentlist);
+		listener = new UIListener(em, gm, new int[]{}, area, editlist, grouplist, groupcontentlist);
 	    editlisten = new EditListener(em, gm, editlist);
 
 	    
@@ -104,19 +104,17 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		//Creation of edit sidebar
 		editarea = new JPanel();
 		editarea.setLayout(new BoxLayout(editarea, BoxLayout.PAGE_AXIS));
-		editarea.setBorder(new TitledBorder ( new EtchedBorder(), "Edit Area"));
+		editarea.setBorder(new TitledBorder(new EtchedBorder(), "Edit Area"));
 
 		JLabel instr = new JLabel("Shift or Ctrl Click to select multiple edits");
-		editarea.add(instr);
+		//editarea.add(instr);
 
 		//Creation of list area for edits/groups
 		JLabel groupLabel = new JLabel("Edit Group:");
 		JLabel editLabel = new JLabel("Edits:");
 		editlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		editscroll = new JScrollPane();
-		JScrollPane groupscroll = new JScrollPane();
-		editscroll.setViewportView(editlist);
-		groupscroll.setViewportView(grouplist);
+		editscroll = new JScrollPane(editlist);
+		JScrollPane groupscroll = new JScrollPane(grouplist);
 		editscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		groupscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		grouplist.addListSelectionListener(this);
@@ -129,13 +127,14 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 
 
 		editarea.add(listarea);
-		
+		editarea.setPreferredSize(new Dimension(200, 700));
+
 
 		//Creation of buttons and attaching actionlisteners
 		editoptions = new JPanel();
 		editoptions.setLayout(new BoxLayout(editoptions, BoxLayout.PAGE_AXIS));
 		editoptions.setBorder(new TitledBorder ( new EtchedBorder(), "Edit Options"));
-		undobutton = new JButton("Undo");
+		undobutton = new JButton("Undo/Redo");
 		undobutton.addActionListener(listener.new HandleUndoAction(editlist.getSelectedIndices()));
 		groupbutton = new JButton("Create Group");
 		groupbutton.addActionListener(listener.new HandleCreateGroupAction());
