@@ -114,6 +114,25 @@ public class DocumentEditManagerSyncTest {
     }
 
     @Test
+    public void testUndoToggle() {
+        PlainDocument doc = new PlainDocument();
+        EditManager em = new EditManager();
+        GroupManager gm = new GroupManager();
+        EditListener el = new EditListener(em, gm, new JList());
+        doc.addDocumentListener(el);
+        Edit.masterId = 0;
+
+        try {
+            doc.insertString(0, "abcd", null);  //0
+            doc.remove(3, 1);
+            em.undo(new int[]{1});
+            assertEquals("abcd", em.getText());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testSingleInsert() {
         PlainDocument doc = new PlainDocument();
         EditManager em = new EditManager();
