@@ -17,17 +17,14 @@ public class EditListener implements DocumentListener {
         this.editlist  = editlist;
     }
 
-    private EditType lastEdit;
-
     public void insertUpdate(DocumentEvent e) {
         Document doc = e.getDocument();
         try {
         	if (Listener.getActive()) {
                 int position = e.getOffset();
                 String text = doc.getText(position, e.getLength());
-                System.out.println(editManager.getText());
+                //System.out.println(editManager.getText());
             	editManager.insert(position, text);
-                //System.out.println(position + ": " + text);
             	editlist.setListData(Listener.getDefaultList().toArray());
         	}
         } catch (BadLocationException badLocationException) {
@@ -39,8 +36,11 @@ public class EditListener implements DocumentListener {
     	if (Listener.getActive()) {
             Document doc = e.getDocument();
             editManager.delete(e.getOffset(), e.getLength());
-    	}
+            editlist.setListData(Listener.getDefaultList().toArray());
+        }
     }
 
-    public void changedUpdate(DocumentEvent e) {}
+    public void changedUpdate(DocumentEvent e) {
+        System.out.println("CHANGED UPDATE");
+    }
 }
