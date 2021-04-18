@@ -130,7 +130,7 @@ public class EditManager {
         return pieces.stream()
                 .map(p -> {
                     Piece q = new Piece(p);
-                    if (Arrays.stream(pieceIds).anyMatch(id -> p.ids().contains(id))) {
+                    if (Arrays.stream(pieceIds).anyMatch(id -> p.editIds().contains(id))) {
                         q.toggleVisible();
                     }
                     return q; })
