@@ -206,45 +206,42 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	//Popup window to edit groups
 	//Displays all edits on the left and the selected group on the right
 	public void manageGroup(String groupname) {
-		if(grouplist.getSelectedIndex() != 0) {
-		JFrame managerwindow = new JFrame();
-		
-		JPanel manageoptions = new JPanel(new GridLayout(0, 2));
-		manageoptions.setBorder(new TitledBorder ( new EtchedBorder(), "Managing Group: "+ groupname));
-		
-		JLabel defaultlabel = new JLabel("All Edits");
-		JLabel grouplabel = new JLabel(groupname);
-		manageoptions.add(defaultlabel);
-		manageoptions.add(grouplabel);
-		
+		if (grouplist.getSelectedIndex() != 0) {
+			JFrame managerwindow = new JFrame();
 
-		defaulteditlist.setListData(Listener.getDefaultList().toArray());
-		defaulteditlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		JScrollPane defaultscroll = new JScrollPane(defaulteditlist);
-		
+			JPanel manageoptions = new JPanel(new GridLayout(0, 2));
+			manageoptions.setBorder(new TitledBorder ( new EtchedBorder(), "Managing Group: "+ groupname));
 
-		groupcontentlist.setListData(Listener.getActiveList().toArray());
-		groupcontentlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		JScrollPane groupscroll = new JScrollPane(groupcontentlist);
-		
-		manageoptions.add(defaultscroll);
-		manageoptions.add(groupscroll);
-		
-		addtogroup = new JButton("Add edit to group");
-		addtogroup.addActionListener(listener.new HandleAddEditAction(defaulteditlist.getSelectedIndices(), grouplist.getSelectedIndex()));
-		remfromgroup = new JButton("Remove edit from group");
-		remfromgroup.addActionListener((listener.new HandleRemoveEditAction(grouplist.getSelectedIndex(), groupcontentlist.getSelectedIndices())));
-		
-		manageoptions.add(addtogroup);
-		manageoptions.add(remfromgroup);
-		
-		
-		
-		managerwindow.add(manageoptions);
-		managerwindow.pack();
-		managerwindow.setVisible(true);
-		}
-		else {
+			JLabel defaultlabel = new JLabel("All Edits");
+			JLabel grouplabel = new JLabel(groupname);
+			manageoptions.add(defaultlabel);
+			manageoptions.add(grouplabel);
+
+
+			defaulteditlist.setListData(Listener.getDefaultList().toArray());
+			defaulteditlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			JScrollPane defaultscroll = new JScrollPane(defaulteditlist);
+
+
+			groupcontentlist.setListData(Listener.getActiveList().toArray());
+			groupcontentlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			JScrollPane groupscroll = new JScrollPane(groupcontentlist);
+
+			manageoptions.add(defaultscroll);
+			manageoptions.add(groupscroll);
+
+			addtogroup = new JButton("Add edit to group");
+			addtogroup.addActionListener(listener.new HandleAddEditAction(defaulteditlist.getSelectedIndices(), grouplist.getSelectedIndex()));
+			remfromgroup = new JButton("Remove edit from group");
+			remfromgroup.addActionListener((listener.new HandleRemoveEditAction(grouplist.getSelectedIndex(), groupcontentlist.getSelectedIndices())));
+
+			manageoptions.add(addtogroup);
+			manageoptions.add(remfromgroup);
+
+			managerwindow.add(manageoptions);
+			managerwindow.pack();
+			managerwindow.setVisible(true);
+		} else {
 			System.out.println("Cannot manage default group");
 		}
 
@@ -252,7 +249,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	
 	public void start() {
 		System.out.println("Starting UIThread");
-		if(t == null) {
+		if (t == null) {
 			t = new Thread(this, "uithread");
 			t.start();
 		}
@@ -260,7 +257,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if(grouplist.getSelectedIndex() == 0 || grouplist.getSelectedIndex() == -1) {
+		if (grouplist.getSelectedIndex() == 0 || grouplist.getSelectedIndex() == -1) {
 			Listener.setActiveList(Listener.getDefaultList());
 			editlist.setListData(Listener.getActiveList().toArray());
 		}
@@ -282,14 +279,11 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	//Functionality for popup windows via creategroup/managegroup
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		String ae = e.getActionCommand();
 
-		if(ae.equals("Manage Group")) {
-			if(grouplist.getSelectedValue() != null) {
-				String group = grouplist.getSelectedValue().toString();
-				manageGroup(group);
-			}
+		if (ae.equals("Manage Group") && grouplist.getSelectedValue() != null) {
+			String group = grouplist.getSelectedValue().toString();
+			manageGroup(group);
 		}
 	}
 }
