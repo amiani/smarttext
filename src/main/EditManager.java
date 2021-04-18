@@ -111,7 +111,6 @@ public class EditManager {
         }
         */
 
-        int id = Edit.masterId;
         Edit edit = new Edit(DELETE);
         edits.add(edit);
 
