@@ -23,7 +23,7 @@ public class Piece {
 
     public Piece(String text, Piece parent) {
         this.text = text;
-        this.editIds = parent.ids();
+        this.editIds = (ArrayList<Integer>) parent.editIds.clone();
         this.isVisible = parent.isVisible();
     }
 
@@ -35,7 +35,7 @@ public class Piece {
 
     public Piece(Piece that) {
         this.text = that.text;
-        this.editIds = that.editIds;
+        this.editIds = (ArrayList<Integer>) that.editIds.clone();
         this.isVisible = that.isVisible;
     }
 
@@ -45,7 +45,7 @@ public class Piece {
         this.isVisible = true;
     }
 
-    public ArrayList<Integer> ids() { return editIds; }
+    public ArrayList<Integer> editIds() { return editIds; }
     public void addId(int editId) { editIds.add(editId); }
     public String text() { return text; }
     public int length() { return text.length(); }
