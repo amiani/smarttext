@@ -50,11 +50,6 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	private EditListener editlisten;
 	private UIListener listener;
 
-
-	
-	public UserInterface() { }
-
-	
 	//Methods to update list selections
 	//Necessary for UIListener functionality
 	private void updateListener() {
@@ -64,7 +59,6 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 	}
 
 	public void run() {
-
 		frame = new JFrame("SmartText");
 		frame.setPreferredSize(new Dimension(800, 400));
 
@@ -162,49 +156,47 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 
 		frame.add(textscroll);
 		frame.add(editarea, BorderLayout.WEST);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-			
+
 			
 		//Menu bar included from example text editor
 		JMenuBar menu_main = new JMenuBar();
 		
-			JMenu menu_file = new JMenu("File");
-			
-			JMenuItem menuitem_new = new JMenuItem("New");
-			JMenuItem menuitem_open = new JMenuItem("Open");
-			JMenuItem menuitem_save = new JMenuItem ("Save");
-			JMenuItem menuitem_quit = new JMenuItem ("Quit");
-			
-			menuitem_save.addActionListener(listener.new HandleSaveAction(area));
-			menuitem_open.addActionListener(listener.new HandleLoadAction(area));
-			menuitem_new.addActionListener(listener.new HandleNewAction(area));
-			menuitem_quit.addActionListener(listener.new HandleQuitAction());
+		JMenu menu_file = new JMenu("File");
 
-			/*
-			menuitem_new.addActionListener(this);
-			menuitem_open.addActionListener(this);
-			menuitem_save.addActionListener(this);
-			menuitem_quit.addActionListener(this);
+		JMenuItem menuitem_new = new JMenuItem("New");
+		JMenuItem menuitem_open = new JMenuItem("Open");
+		JMenuItem menuitem_save = new JMenuItem ("Save");
+		JMenuItem menuitem_quit = new JMenuItem ("Quit");
+
+		menuitem_save.addActionListener(listener.new HandleSaveAction(area));
+		menuitem_open.addActionListener(listener.new HandleLoadAction(area));
+		menuitem_new.addActionListener(listener.new HandleNewAction(area));
+		menuitem_quit.addActionListener(listener.new HandleQuitAction());
+
+		/*
+		menuitem_new.addActionListener(this);
+		menuitem_open.addActionListener(this);
+		menuitem_save.addActionListener(this);
+		menuitem_quit.addActionListener(this);
 		*/
 
 
-			menu_main.add(menu_file);
-		    menu_file.add(menuitem_new);
-		    menu_file.add(menuitem_open);
-		    menu_file.add(menuitem_save);
-		    menu_file.add(menuitem_quit);
+		menu_main.add(menu_file);
+		menu_file.add(menuitem_new);
+		menu_file.add(menuitem_open);
+		menu_file.add(menuitem_save);
+		menu_file.add(menuitem_quit);
 
 
-		    frame.setJMenuBar(menu_main);
+		frame.setJMenuBar(menu_main);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 
-	while(true) {
-		//Polls JList objects
-		updateListener();
-
-	}
-
+		while(true) {
+			//Polls JList objects
+			updateListener();
+		}
 	}
 
 
