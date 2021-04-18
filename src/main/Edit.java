@@ -13,13 +13,6 @@ public class Edit {
         this.pieceId = this.id;
     }
 
-    public Edit(EditType type, int pieceId){
-        this.id = masterId++;
-        this.type = type;
-        this.pieceId = pieceId;
-    }
-
-
     public String toString() {
         return "Edit " + id + " "
                 + (isUndone ? "x" : "✓");
