@@ -5,14 +5,21 @@ public class Edit {
     protected static int masterId = 0;
     private boolean isUndone = false;
     private EditType type; //insert or delete
-    private int[] pieces;
+    private int pieceId;
 
-    public Edit(EditType type, int[] pieceIds){
+    public Edit(EditType type) {
         this.id = masterId++;
         this.type = type;
-        this.pieces = pieceIds;
+        this.pieceId = this.id;
     }
-   
+
+    public Edit(EditType type, int pieceId){
+        this.id = masterId++;
+        this.type = type;
+        this.pieceId = pieceId;
+    }
+
+
     public String toString() {
         return "Edit " + id + " "
                 + (isUndone ? "x" : "✓");
@@ -20,7 +27,7 @@ public class Edit {
     public int id(){
         return id;
     }
-    public int[] pieces() { return pieces;}
+    public int pieceId() { return pieceId;}
 }
 
 enum EditType {

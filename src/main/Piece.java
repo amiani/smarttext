@@ -1,7 +1,9 @@
 package main;
 
+import java.util.ArrayList;
+
 public class Piece {
-    private int id;
+    private ArrayList<Integer> ids = new ArrayList<>();
     protected static int masterId = 0;
     private String text;
 
@@ -21,25 +23,30 @@ public class Piece {
 
     public Piece(String text, Piece parent) {
         this.text = text;
-        this.id = parent.id();
+        this.ids = parent.ids();
         this.isVisible = parent.isVisible();
     }
 
     public Piece(String text){
-        this.id = masterId++;
+        this.ids.add(masterId++);
         this.isVisible = true;
         this.text = text;
     }
 
     public Piece(Piece that) {
         this.text = that.text;
-        this.id = that.id;
+        this.ids = that.ids;
         this.isVisible = that.isVisible;
     }
 
-    public int id(){
-        return id;
+    public Piece(String text, int editId) {
+        this.text = text;
+        this.ids.add(editId);
+        this.isVisible = true;
     }
+
+    public ArrayList<Integer> ids() { return ids; }
+    public void addId(int editId) { ids.add(editId); }
     public String text() { return text; }
     public int length() { return text.length(); }
 }
