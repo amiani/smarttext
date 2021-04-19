@@ -245,6 +245,7 @@ public class EditManagerTest {
     }
     */
 
+    /*
     @Test
     public void testTogglePieces() {
         EditManager em = new EditManager();
@@ -257,4 +258,5 @@ public class EditManagerTest {
         assertFalse(em.togglePieces(pieces, new int[]{1}).get(1).isVisible());
         assertTrue(em.togglePieces(pieces, new int[]{1}).get(0).isVisible());
     }
+     */
 }

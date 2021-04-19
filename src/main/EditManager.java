@@ -52,7 +52,18 @@ public class EditManager {
     }
 
     public void undo(int[] editIds){
-        pieces = togglePieces(pieces, toPieceIds(edits, editIds));
+        edits.stream()
+                .filter(e -> Arrays.stream(editIds).anyMatch(eid -> eid == e.id()))
+                .filter(e -> !e.isUndone())
+                .forEach(e -> {
+                    if (e.type() == INSERT) {
+                        pieces = togglePieces(pieces, toPieceIds(edits, editIds), false);
+                    } else {
+                        pieces = togglePieces(pieces, toPieceIds(edits, editIds), true);
+                    }
+                    e.undo();
+                });
+        //pieces = togglePieces(pieces, toPieceIds(edits, editIds));
     }
     /*
     public void redo(int[] editIds){
@@ -128,12 +139,12 @@ public class EditManager {
                 .toArray();
     }
 
-    protected LinkedList<Piece> togglePieces(List<Piece> pieces, int[] pieceIds) {
+    protected LinkedList<Piece> togglePieces(List<Piece> pieces, int[] pieceIds, boolean visible) {
         return pieces.stream()
                 .map(p -> {
                     Piece q = new Piece(p);
                     if (Arrays.stream(pieceIds).anyMatch(id -> p.editIds().contains(id))) {
-                        q.toggleVisible();
+                        q.setVisible(visible);
                     }
                     return q; })
                 .collect(Collectors.toCollection(LinkedList::new));

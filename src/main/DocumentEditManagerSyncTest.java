@@ -72,10 +72,8 @@ public class DocumentEditManagerSyncTest {
             doc.insertString(2, "AB", null);    //3
             em.undo(new int[]{1});
             assertEquals("ABijkl", em.getText());
-            em.redo(new int[]{0});
-            assertEquals("abcdABijkl", em.getText());
             doc.insertString(5, "XY", null);    //4
-            assertEquals("abcdAXYBijkl", em.getText());
+            assertEquals("ABijkXYl", em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
@@ -100,14 +98,12 @@ public class DocumentEditManagerSyncTest {
             doc.insertString(2, "AB", null);    //3
             em.undo(new int[]{1});
             assertEquals("ABijkl", em.getText());
-            em.redo(new int[]{0});
-            assertEquals("abcdABijkl", em.getText());
             doc.insertString(5, "XY", null);    //4
-            assertEquals("abcdAXYBijkl", em.getText());
+            assertEquals("ABijkXYl", em.getText());
             doc.remove(6, 4);                       //5
-            assertEquals("abcdAXkl", em.getText());
+            assertEquals("ABijkX", em.getText());
             doc.remove(2, 5);
-            assertEquals("abl", em.getText());
+            assertEquals("AB", em.getText());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }

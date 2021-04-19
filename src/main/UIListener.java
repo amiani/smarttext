@@ -133,7 +133,7 @@ public class UIListener {
 		}
 	}
 
-	/**
+	/*
 	 * The Listener associated with the redo method in the EditManager
 	 * 
 	 * @author Brandon
@@ -151,7 +151,7 @@ public class UIListener {
 		public void actionPerformed(ActionEvent e) {
 			if (checkNegativeArr(edits)) {
 				System.out.println("redo Handled ");
-				em.redo(edits);
+				//em.redo(edits);
 
 			} else {
 
