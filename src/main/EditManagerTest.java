@@ -232,21 +232,6 @@ public class EditManagerTest {
 
     /*
     @Test
-    public void testToPieceIds() {
-        EditManager em = new EditManager();
-        ArrayList<Edit> edits = new ArrayList<>();
-        edits.add(new Edit(INSERT, 0);
-        //edits.add(new Edit(INSERT, 1,2,3}));
-        //edits.add(new Edit(INSERT, new int[]{1,3,5}));
-
-        assertArrayEquals(new int[]{0}, em.toPieceIds(edits, new int[]{0}));
-        assertArrayEquals(new int[]{1,2,3}, em.toPieceIds(edits, new int[]{1}));
-        assertArrayEquals(new int[]{1,2,3,5}, em.toPieceIds(edits, new int[]{1, 2}));
-    }
-    */
-
-    /*
-    @Test
     public void testTogglePieces() {
         EditManager em = new EditManager();
         Piece.masterId = 0;

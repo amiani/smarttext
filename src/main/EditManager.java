@@ -63,7 +63,6 @@ public class EditManager {
                     }
                     e.undo();
                 });
-        //pieces = togglePieces(pieces, toPieceIds(edits, editIds));
     }
     /*
     public void redo(int[] editIds){
@@ -100,29 +99,6 @@ public class EditManager {
         ArrayList<ArrayList<Piece>> splits = results.stream()
                 .map(res -> splitPiece(res.piece, res.piecePosition, res.splitLength, Edit.masterId))
                 .collect(Collectors.toCollection(ArrayList<ArrayList<Piece>>::new));
-
-        /*
-        ArrayList<Integer> pieceIds = new ArrayList<>();
-        if (splits.get(0).size() == 1) {
-            pieceIds = splits.get(0).get(0).ids();
-        } else {
-            ArrayList<Integer> pre = splits.get(0).get(1).ids();
-            ArrayList<Integer> mid;
-            if (splits.size() > 2) {
-                mid = splits.subList(2, splits.size() - 1).stream()
-                        .flatMap(s -> s.get(0).ids().stream())
-                        .collect(Collectors.toCollection(ArrayList<Integer>::new));
-            } else {
-                mid = new ArrayList<>();
-            }
-            ArrayList<Integer> post = splits.get(splits.size() - 1).get(0).ids();
-            pieceIds.add(pre);
-            for (int i = 0; i != mid.size(); i++) {
-                pieceIds[i + 1] = mid[i];
-            }
-            pieceIds[pieceIds.size() - 1] = post;
-        }
-        */
 
         Edit edit = new Edit(DELETE);
         edits.add(edit);
