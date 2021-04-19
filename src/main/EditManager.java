@@ -54,9 +54,11 @@ public class EditManager {
     public void undo(int[] editIds){
         pieces = togglePieces(pieces, toPieceIds(edits, editIds));
     }
+    /*
     public void redo(int[] editIds){
         undo(editIds);
     }
+    */
 
     public void deleteEdits(int[] editIds){
         edits = removeEdits(edits, editIds);

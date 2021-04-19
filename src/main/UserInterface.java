@@ -134,7 +134,7 @@ public final class UserInterface extends JFrame implements Runnable, ActionListe
 		editoptions = new JPanel();
 		editoptions.setLayout(new BoxLayout(editoptions, BoxLayout.PAGE_AXIS));
 		editoptions.setBorder(new TitledBorder ( new EtchedBorder(), "Edit Options"));
-		undobutton = new JButton("Undo/Redo");
+		undobutton = new JButton("Undo");
 		undobutton.addActionListener(listener.new HandleUndoAction(editlist.getSelectedIndices()));
 		groupbutton = new JButton("Create Group");
 		groupbutton.addActionListener(listener.new HandleCreateGroupAction());
