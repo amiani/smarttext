@@ -30,7 +30,6 @@ public class Edit {
     }
 
     public String toString() {
-        //String typeString = type == EditType.INSERT ? "("
         return "Edit " + id
                 + (type == EditType.INSERT ? " (insert) " : " (delete) ")
                 + (isUndone ? "x" : "✓");
